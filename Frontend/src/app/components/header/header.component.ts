@@ -1,35 +1,23 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-header',
-  imports: [],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  standalone: true,
+  imports: [CommonModule, IconComponent],
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-   searchTerm: string = '';
-
-  menus = [
-    { title: 'Accueil', icon: 'home', link: '/' },
-    { 
-      title: 'Lubrifiants', 
-      icon: 'droplet', 
-      sub: ['huile moteur','huile transmission'] 
-    },
-    { 
-      title: 'Graisses', 
-      icon: 'cog6', 
-      sub: ['graisse moteur','graisse transmission'] 
-    },
-    { 
-      title: 'Filtrations', 
-      icon: 'funnel', 
-      sub: ['filtre moteur','filtre transmission'] 
-    },
+  menuItems = [
+    { label: 'Accueil', icon: 'home' },
+    { label: 'Lubrifiants', icon: 'droplet', sub: ['Huile moteur', 'Huile transmission'] },
+    { label: 'Graisses', icon: 'engrenage', sub: ['Graisse moteur', 'Graisse transmission'] },
+    { label: 'Filtrations', icon: 'funnel', sub: ['Filtre moteur', 'Filtre transmission'] },
+    { label: 'Contact', icon: 'contact'}
   ];
 
   login() {
-    console.log('Connexion Administration');
-    // ici tu peux gérer la redirection ou l'ouverture du modal
+    console.log('Connexion…');
   }
 }

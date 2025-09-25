@@ -1,213 +1,76 @@
-<div class="navbar bg-[#424141] shadow-sm">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h8m-8 6h16"
-          />
-        </svg>
-      </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow text-bold"
-      >
-        <!-- menu navbar mobile -->
-        <li><a>Accueil</a></li>
-        <li>
-          <a>Lubrifiants</a>
-          <ul class="p-2">
-            <li><a>Huile moteur</a></li>
-            <li><a>Huile transmission</a></li>
-          </ul>
-        </li>
-        <li>
-          <a>Graisses</a>
-          <ul class="p-2">
-            <li><a>Graisse moteur</a></li>
-            <li><a>Graisse transmission</a></li>
-          </ul>
-        </li>
-        <li>
-          <a>Filtrations</a>
-          <ul class="p-2">
-            <li><a>Filtre moteur</a></li>
-            <li><a>Filtre transmission</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <!-- Logo du header France Marine Services -->
-    <img
-      src="assets/images/Logo-France-Marine-Services.png"
-      alt=""
-      class="max-w-32 sm:max-w-48"
-    />
+<!-- Navbar principale -->
+<div class="bg-[#424141] shadow-sm p-2 flex flex-col lg:flex-col">
+
+  <!-- Barre de recherche centrée -->
+  <!-- Ligne logo + bouton -->
+  <div class="flex w-full justify-between items-center mb-2">
+    <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="max-w-32 sm:max-w-48"/>
+    <label class="input flex items-center space-x-2 w-11/12 sm:w-1/3 rounded-xl ">
+      <app-icon name="search"></app-icon>
+      <input type="search" placeholder="Rechercher" class="px-2 py-1 rounded w-full"/>
+    </label>
+    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center space-x-1 px-1 py-1 sm:px-4 sm:py-2">
+      <app-icon name="user"></app-icon>
+      <span>Connexion administration</span>
+    </button>
   </div>
-  <!-- barre de recherche -->
-  <label class="input flex self-start m-4">
-    <svg
-      class="h-[1em] opacity-50"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-    >
-      <g
-        stroke-linejoin="round"
-        stroke-linecap="round"
-        stroke-width="2.5"
-        fill="none"
-        stroke="currentColor"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.3-4.3"></path>
-      </g>
-    </svg>
-    <input type="search" required placeholder="Rechercher" />
-  </label>
 
-  <div class="navbar-center hidden lg:flex self-end ">
-    <ul class="menu menu-horizontal px-4 flex justify-around ">
-      <!-- icon accueil + texte -->
-      <li class="flex-1 text-center">
-        <a class="flex items-center space-x-2 text-white font-bold">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-5 w-5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2.25 12l8.954-8.955c.44-.439 
-               1.152-.439 1.591 0L21.75 12M4.5 
-               9.75v10.125c0 .621.504 1.125 
-               1.125 1.125H9.75v-4.875c0-.621.504-1.125 
-               1.125-1.125h2.25c.621 0 1.125.504 
-               1.125 1.125V21h4.125c.621 0 
-               1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-            />
-          </svg>
-          <span>Accueil</span>
-        </a>
-      </li>
 
-      <!-- icon lubrifiants + texte -->
-      <li class="flex-1 text-center">
-        <details>
-          <summary class="text-white font-bold">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="h-5 w-5 mr-2 text-white"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 2.25c0 0-7.5 8.25-7.5 12a7.5 7.5 0 0015 0c0-3.75-7.5-12-7.5-12z"
-              />
-            </svg>
-            <span>Lubrifiants</span>
+  <!-- Menu desktop -->
+  <div class="hidden lg:flex justify-center">
+    <ul class="flex space-x-12">
+      <li *ngFor="let item of menuItems" class="text-white font-bold text-center">
+        <!-- Item avec sous-menu -->
+        <details class="inline-block relative" *ngIf="item.sub; else desktopSingleItem">
+          <summary class="inline-flex items-center space-x-2 cursor-pointer hover:text-yellow-400">
+            <app-icon [name]="item.icon"></app-icon>
+            <span>{{ item.label }}</span>
           </summary>
-          <ul class="p-2">
-            <li><a>huile moteur</a></li>
-            <li><a>huile transmission</a></li>
+          <ul class="absolute left-0 mt-1 p-2 bg-[#424141] rounded shadow z-10">
+            <li *ngFor="let sub of item.sub">
+              <a class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer">{{ sub }}</a>
+            </li>
           </ul>
         </details>
-      </li>
-      <!-- icon graisses + texte -->
-      <li class="flex-1 text-center">
-        <details>
-          <summary class="text-white font-bold">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-5 w-5 mr-2 text-white"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M11.25 1.5c-.414 0-.75.336-.75.75v1.036c0 
-           .3-.174.567-.444.684a8.999 8.999 0 00-2.292 
-           1.324.75.75 0 01-.95-.067l-.733-.733a.75.75 
-           0 00-1.06 0l-1.06 1.06a.75.75 0 000 
-           1.06l.733.733c.23.23.29.58.067.95a8.999 
-           8.999 0 00-1.324 2.292.75.75 0 01-.684.444H2.25a.75.75 
-           0 00-.75.75v1.5c0 .414.336.75.75.75h1.036c.3 
-           0 .567.174.684.444.33.76.766 1.47 1.324 
-           2.292a.75.75 0 01-.067.95l-.733.733a.75.75 
-           0 000 1.06l1.06 1.06a.75.75 0 001.06 
-           0l.733-.733c.23-.23.58-.29.95-.067.822.558 
-           1.532.994 2.292 1.324.27.117.444.384.444.684V21.75c0 
-           .414.336.75.75.75h1.5c.414 0 .75-.336.75-.75v-1.036c0-.3.174-.567.444-.684a8.999 
-           8.999 0 002.292-1.324.75.75 0 
-           01.95.067l.733.733a.75.75 0 001.06 
-           0l1.06-1.06a.75.75 0 000-1.06l-.733-.733a.75.75 
-           0 01-.067-.95c.558-.822.994-1.532 
-           1.324-2.292.117-.27.384-.444.684-.444H21.75c.414 
-           0 .75-.336.75-.75v-1.5a.75.75 
-           0 00-.75-.75h-1.036c-.3 0-.567-.174-.684-.444a8.999 
-           8.999 0 00-1.324-2.292.75.75 
-           0 01.067-.95l.733-.733a.75.75 
-           0 000-1.06l-1.06-1.06a.75.75 
-           0 00-1.06 0l-.733.733a.75.75 
-           0 01-.95.067 8.999 8.999 
-           0 00-2.292-1.324.75.75 
-           0 01-.444-.684V2.25a.75.75 
-           0 00-.75-.75h-1.5zM12 
-           8.25a3.75 3.75 0 110 7.5 3.75 
-           3.75 0 010-7.5z"
-            />
-          </svg>
-          <span>Graisses</span>
-          </summary>
-          <ul class="p-2">
-            <li><a>graisse moteur</a></li>
-            <li><a>graisse transmission</a></li>
-          </ul>
-        </details>
-      </li>
-      <!-- icon filtrations + texte -->
-      <li class="flex-1 text-center">
-        <details>
-          <summary class="text-white font-bold">
-          <svg xmlns="http://www.w3.org/2000/svg" 
-           fill="none" viewBox="0 0 24 24" 
-           stroke-width="1.5" stroke="currentColor" 
-           class="h-5 w-5 mr-2 text-white">
-        <path stroke-linecap="round" stroke-linejoin="round" 
-              d="M3 4.5h18M6 9.75h12M9 15h6m-3 4.5v-4.5"/>
-      </svg>
-          <span>Filtrations</span>
-          </summary>
-          <ul class="p-2">
-            <li><a>filtre moteur</a></li>
-            <li><a>filtre transmission</a></li>
-          </ul>
-        </details>
+        <!-- Item simple -->
+        <ng-template #desktopSingleItem>
+          <a class="inline-flex items-center space-x-2 hover:text-yellow-400 cursor-pointer">
+            <app-icon [name]="item.icon"></app-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        </ng-template>
       </li>
     </ul>
   </div>
-  <div class="navbar-end self-start p-4">
-    <button class="btn btn-xs sm:btn-sm md:btn-md bg-[#A39F22] text-white rounded-xl">
-      Connexion Administration
-    </button>
+
+  <!-- Dropdown mobile -->
+  <div class="lg:hidden mt-2">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost">
+        <app-icon name="burger" class="text-white"></app-icon>
+      </label>
+      <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black">
+        <li *ngFor="let item of menuItems">
+          <details *ngIf="item.sub; else mobileSingleItem">
+            <summary class="flex items-center space-x-2">
+              <app-icon [name]="item.icon"></app-icon>
+              <span>{{ item.label }}</span>
+            </summary>
+            <ul class="p-2">
+              <li *ngFor="let sub of item.sub">
+                <a>{{ sub }}</a>
+              </li>
+            </ul>
+          </details>
+          <ng-template #mobileSingleItem>
+            <a class="flex items-center space-x-2">
+              <app-icon [name]="item.icon"></app-icon>
+              <span>{{ item.label }}</span>
+            </a>
+          </ng-template>
+        </li>
+      </ul>
+    </div>
   </div>
+
 </div>
