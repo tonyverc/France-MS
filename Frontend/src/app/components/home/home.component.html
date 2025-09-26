@@ -1,24 +1,74 @@
-<div class="relative w-full h-screen mt-5">
+<div class="relative w-full h-screen">
   <!-- Vidéo full screen -->
-  <video autoplay muted loop playsinline class="w-full h-full object-cover">
-    <source src="assets/vidéos/vidéo-accueil-france-marine.mp4" type="video/mp4">
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    class="w-full h-full object-cover lg:mt-5 mt-5"
+  >
+    <source src="assets/vidéos/vidéo-fms.mp4" type="video/mp4" />
     Votre navigateur ne supporte pas la balise vidéo.
   </video>
 
-  <!-- Texte superposé -->
-  <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start">
-    <h1 class="text-3xl sm:text-5xl font-bold mb-4 text-[#424141]">Bienvenue chez France Marine Services</h1>
-    <p class="text-lg sm:text-2xl text-[#424141]"> la performance et la fiabilité au service de vos péniches.</p>
+  <!-- Texte superposé sur vidéo -->
+  <div
+    class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start lg:mt-30 mt-10"
+  >
+    <h1 class="text-3xl sm:text-5xl font-bold mb-4 text-[#424141]">
+      Bienvenue chez France Marine Services
+    </h1>
+    <p class="text-lg sm:text-2xl text-[#424141]">
+      la performance et la fiabilité au service de vos péniches.
+    </p>
   </div>
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-  <app-card-produits 
-      *ngFor="let card of cards"
+<!-- Création des cartes de produits -->
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"
+>
+  <ng-container *ngFor="let card of cards">
+    <app-card-produits
+      *ngIf="card.imageUrl && card.description && card.link"
       [imageUrl]="card.imageUrl"
       [description]="card.description"
-      [link]="card.link">
-  </app-card-produits>
+      [link]="card.link"
+    >
+    </app-card-produits>
+  </ng-container>
 </div>
 
+<!-- Section "À propos de nous" -->
+<div class="bg-[#424141] py-12 px-4 sm:px-6 lg:px-8 ">
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-8">
+    
+    <!-- Texte -->
+    <div class="flex flex-col text-left lg:w-1/2 ">
+      <h2 class="text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
+      <p class="text-xl text-white">{{ titleDescription }}</p>
+    </div>
 
+    <!-- Carousel -->
+    <div class="lg:w-1/2">
+      <div class="carousel rounded-box w-full">
+        <div class="carousel-item w-1/2">
+          <img src="assets/images/peniche-lyonnaise.jpg" class="w-full" />
+        </div>
+        <div class="carousel-item w-1/2">
+          <img src="assets/images/peniche-2.jpg" class="w-full" />
+        </div>
+        <div class="carousel-item w-1/2">
+          <img src="assets/images/huile.jpg" class="w-full" />
+        </div>
+        <div class="carousel-item w-1/2">
+          <img src="" class="w-full" />
+        </div>
+        <div class="carousel-item w-1/2">
+          <img src="assets/images/peniche-2.jpg" class="w-full" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

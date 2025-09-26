@@ -1,0 +1,43 @@
+<footer class="footer sm:footer-horizontal bg-[#34219A] text-neutral-content p-10 mt-5 font-bold">
+  <!-- Logo + adresse -->
+  <aside>
+    <div class="flex flex-row items-center space-x-6">
+      <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo FMS" class="w-28" />
+      <p class="whitespace-pre-line text-base">{{ adresse }}</p>
+    </div>
+  </aside>
+
+<!-- Contact -->
+<div class="flex flex-col space-y-3 items-center text-center w-full sm:w-auto">
+  <p>{{ information }}</p>
+
+  <button class="btn bg-[#A39F22] text-black rounded-xl flex items-center space-x-1 px-1 py-1 sm:px-4 sm:py-2">
+    <span>{{ contact }}</span>
+  </button>
+
+  <!-- Mentions légales + Plan du site -->
+  <div class="flex flex-row space-x-6 mt-2 border-t border-gray-500 pt-4">
+    <a href="">{{ aMention }}</a>
+    <a href="">{{aPlan}}</a>
+  </div>
+</div>
+
+  <!-- Réseaux sociaux -->
+  <nav class="ml-auto self-end">
+    <div class="grid grid-flow-col gap-4">
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="currentColor" class="fill-current">
+                <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-.9 1.7-2.2 3.9-2.2 4.2 0 5 2.8 5 6.4V24h-4v-7.7c0-1.8 0-4.1-2.5-4.1s-2.9 2-2.9 4v7.8h-4V8z"/>
+            </svg>
+        </a>
+
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            viewBox="0 0 24 24" fill="currentColor" class="fill-current">
+                <path d="M22.675 0h-21.35C.6 0 0 .6 0 1.326v21.348C0 23.4.6 24 1.326 24H12.82V14.708h-3.23V11.08h3.23V8.41c0-3.2 1.955-4.946 4.81-4.946 1.367 0 2.544.1 2.887.147v3.35h-1.982c-1.557 0-1.86.74-1.86 1.827v2.29h3.72l-.484 3.628h-3.236V24h6.348C23.4 24 24 23.4 24 22.674V1.326C24 .6 23.4 0 22.675 0z"/>
+            </svg>
+        </a>
+    </div>
+  </nav>
+</footer>

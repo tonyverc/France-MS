@@ -1,7 +1,7 @@
-<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 mt-10">
-  <img [src]="imageUrl" alt="Produit" class="w-full p-5">
+<div *ngIf="imageUrl && description && link" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl shadow-gray-600 transition-shadow duration-300 mt-10 items-center text-center m-10 p-5">
   <div class="p-4">
+  <img [src]="imageUrl" alt="Produit" class="w-full h-64 object-cover rounded-t-xl">
     <p class="text-gray-800 font-semibold mb-2">{{ description }}</p>
-    <a [href]="link" class="inline-block mt-2 px-4 py-2 bg-[#A39F22] text-white rounded hover:bg-yellow-500 transition-colors">{{ link }}</a>
+    <a [href]="link" class="inline-block mt-2 px-4 py-2 bg-[#A39F22] text-white rounded-xl hover:bg-yellow-500 transition-colors ring-2 ring-gray-600">{{ link }}</a>
   </div>
 </div>

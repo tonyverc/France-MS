@@ -10,6 +10,6 @@ module.exports = {
     require('daisyui')
   ],
   daisyui: {
-    themes: ["entreprise",], // ou ton thème custom
+    themes: ["entreprise","dark"], // ou ton thème custom
   },
 }

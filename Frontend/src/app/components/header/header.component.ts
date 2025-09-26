@@ -17,7 +17,5 @@ export class HeaderComponent {
     { label: 'Contact', icon: 'contact'}
   ];
 
-  login() {
-    console.log('Connexion…');
-  }
+ 
 }

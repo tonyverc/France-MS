@@ -1,15 +1,16 @@
 <!-- Navbar principale -->
-<div class="bg-[#424141] shadow-sm p-2 flex flex-col lg:flex-col">
+<div class="bg-[#424141] shadow-sm p-2 flex flex-col lg:flex-col sticky top-0 left-0 w-full z-50 h-auto">
+
 
   <!-- Barre de recherche centrée -->
   <!-- Ligne logo + bouton -->
   <div class="flex w-full justify-between items-center mb-2">
     <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="max-w-32 sm:max-w-48"/>
-    <label class="input flex items-center space-x-2 w-11/12 sm:w-1/3 rounded-xl ">
+    <label class="input flex items-center rounded-xl ">
       <app-icon name="search"></app-icon>
       <input type="search" placeholder="Rechercher" class="px-2 py-1 rounded w-full"/>
     </label>
-    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center space-x-1 px-1 py-1 sm:px-4 sm:py-2">
+    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center px-2 py-1 sm:px-4 sm:py-4">
       <app-icon name="user"></app-icon>
       <span>Connexion administration</span>
     </button>
@@ -46,7 +47,7 @@
   <!-- Dropdown mobile -->
   <div class="lg:hidden mt-2">
     <div class="dropdown">
-      <label tabindex="0" class="btn btn-ghost">
+      <label tabindex="0" class="btn btn-ghost  ">
         <app-icon name="burger" class="text-white"></app-icon>
       </label>
       <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black">
