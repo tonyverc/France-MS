@@ -19,6 +19,8 @@ export class HomeComponent {
   ]
 
   title:string = 'A propos de nous.';
-  titleDescription:string = 'France Marine Services est spécialisée dans la fourniture de lubrifiants, graisses et solutions de filtration destinées aux péniches et à la navigation intérieure. Notre mission est d’accompagner les professionnels du fluvial avec des produits fiables, adaptés aux exigences des moteurs et équipements, afin de garantir performance, sécurité et longévité.';
+  Description:string = 'France Marine Services est spécialisée dans la fourniture de lubrifiants, graisses et solutions de filtration destinées aux péniches et à la navigation intérieure. Notre mission est d’accompagner les professionnels du fluvial avec des produits fiables, adaptés aux exigences des moteurs et équipements, afin de garantir performance, sécurité et longévité.';
+  videoTitle:string ='Bienvenue chez France Marine Services';
+  videoDescription:string = 'la performance et la fiabilité au service de vos péniches.';
   
 }

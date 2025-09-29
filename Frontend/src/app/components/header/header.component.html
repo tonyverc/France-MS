@@ -5,14 +5,14 @@
   <!-- Barre de recherche centrée -->
   <!-- Ligne logo + bouton -->
   <div class="flex w-full justify-between items-center mb-2">
-    <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="max-w-32 sm:max-w-48"/>
-    <label class="input flex items-center rounded-xl ">
+    <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="max-w-32 sm:max-w-48 w-auto"/>
+    <label class="input flex items-center rounded-xl">
       <app-icon name="search"></app-icon>
-      <input type="search" placeholder="Rechercher" class="px-2 py-1 rounded w-full"/>
+      <input type="search" placeholder="Rechercher" class="px-2 py-1 rounded w-full text-xl text-black"/>
     </label>
-    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center px-2 py-1 sm:px-4 sm:py-4">
+    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center px-2 py-1 sm:px-4 sm:py-2">
       <app-icon name="user"></app-icon>
-      <span>Connexion administration</span>
+      <span class="text-lg">Connexion administration</span>
     </button>
   </div>
 
@@ -20,7 +20,7 @@
   <!-- Menu desktop -->
   <div class="hidden lg:flex justify-center">
     <ul class="flex space-x-12">
-      <li *ngFor="let item of menuItems" class="text-white font-bold text-center">
+      <li *ngFor="let item of menuItems" class="text-white font-bold text-center text-2xl">
         <!-- Item avec sous-menu -->
         <details class="inline-block relative" *ngIf="item.sub; else desktopSingleItem">
           <summary class="inline-flex items-center space-x-2 cursor-pointer hover:text-yellow-400">
@@ -29,13 +29,13 @@
           </summary>
           <ul class="absolute left-0 mt-1 p-2 bg-[#424141] rounded shadow z-10">
             <li *ngFor="let sub of item.sub">
-              <a class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer">{{ sub }}</a>
+              <a class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer" >{{ sub }}</a>
             </li>
           </ul>
         </details>
         <!-- Item simple -->
         <ng-template #desktopSingleItem>
-          <a class="inline-flex items-center space-x-2 hover:text-yellow-400 cursor-pointer">
+          <a [routerLink]="item.path" class="inline-flex items-center space-x-2 hover:text-yellow-400 cursor-pointer">
             <app-icon [name]="item.icon"></app-icon>
             <span>{{ item.label }}</span>
           </a>
@@ -50,7 +50,7 @@
       <label tabindex="0" class="btn btn-ghost  ">
         <app-icon name="burger" class="text-white"></app-icon>
       </label>
-      <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black">
+      <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black text-xl">
         <li *ngFor="let item of menuItems">
           <details *ngIf="item.sub; else mobileSingleItem">
             <summary class="flex items-center space-x-2">
@@ -59,12 +59,12 @@
             </summary>
             <ul class="p-2">
               <li *ngFor="let sub of item.sub">
-                <a>{{ sub }}</a>
+                <a >{{ sub }}</a>
               </li>
             </ul>
           </details>
           <ng-template #mobileSingleItem>
-            <a class="flex items-center space-x-2">
+            <a [routerLink]="item.path" class="flex items-center space-x-2">
               <app-icon [name]="item.icon"></app-icon>
               <span>{{ item.label }}</span>
             </a>

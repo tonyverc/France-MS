@@ -1,0 +1,59 @@
+<!-- mise en place file d'ariane --> 
+
+<div class="breadcrumbs text-2xl p-10">
+  <ul class="flex items-center space-x-2">
+    <!-- Accueil -->
+    <li class="flex items-center">
+      <a [routerLink]="'/'" class="flex items-center hover:text-[#34219A]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             class="h-4 w-4 stroke-current mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+        </svg>
+        Accueil
+      </a>
+    </li>
+
+    <!-- Page actuelle -->
+    <li class="flex items-center text-gray-500">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           class="h-4 w-4 stroke-current mr-1">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+      </svg>
+      Mentions Légales
+    </li>
+  </ul>
+</div>
+
+
+<!-- mention légales -->
+<div class="flex flex-col items-center space-y-8 text-xl p-5">
+    <h1 class="text-4xl font-bold text-center">Mentions Légales</h1>
+    <p>Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en l'économie numérique, il est précisé aux utilisateurs du site France Marine Services l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.</p>
+
+       <span class="font-bold">Edition du site</span>  
+       <p>
+        Le présent site, accessible à l’URL www.francemarineservices.fr (le « Site »), est édité par :
+        France Marine Services , société au capital de 1000 euros, inscrite au R.C.S. de ARRAS sous le numéro 913 634 168, dont le siège social est situé au 7 R DES SOURCES, LOT LE MOULIN, 62112 GOUY-SOUS-BELLONNE, représenté(e) par jean-françois DESPREZ-LECLERCQ dûment habilité(e)
+
+        Le numéro individuel TVA de l’éditeur est : FR94913634168.
+       </p> 
+
+        <span class="font-bold">Hébergement</span>
+
+        Le Site est hébergé par la société O2Switch, situé 222 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand, (contact téléphonique ou email : (+33) 4 44 44 60 40).
+
+        Directeur de publication 
+
+        Le Directeur de la publication du Site est jean-françois DESPREZ-LECLERCQ .
+
+        <span class="font-bold mt-6">Nous contacter</span> 
+
+        Par téléphone : +33675806364
+        Par email : {{ email }}
+        Par courrier : 7 R DES SOURCES, LOT LE MOULIN, 62112 GOUY-SOUS-BELLONNE
+
+        <span class="font-bold mt-6">Données personnelles</span>
+        <p>Le traitement de vos données à caractère personnel est régi par notre Charte du respect de la vie privée, disponible depuis la section "Charte de Protection des Données Personnelles", conformément au Règlement Général sur la Protection des Données 2016/679 du 27 avril 2016 («RGPD»).</p>
+</div>

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
@@ -16,5 +18,9 @@ export class FooterComponent {
   aMention:string = 'Mentions légales';
   aPlan:string = 'Plan du site';
   contact:string = 'Nous contacter';
+  
+  // mise a jour de la date du copyright dynamique
+  currentYear: number = new Date().getFullYear();
+  
 
 }

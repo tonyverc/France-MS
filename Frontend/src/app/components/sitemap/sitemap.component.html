@@ -1,0 +1,51 @@
+<!-- mise en place file d'ariane --> 
+
+<div class="breadcrumbs text-2xl p-10">
+  <ul class="flex items-center space-x-2">
+    <!-- Accueil -->
+    <li class="flex items-center">
+      <a [routerLink]="'/'" class="flex items-center hover:text-[#34219A]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             class="h-4 w-4 stroke-current mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+        </svg>
+        Accueil
+      </a>
+    </li>
+
+    <!-- Page actuelle -->
+    <li class="flex items-center text-gray-500">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           class="h-4 w-4 stroke-current mr-1">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+      </svg>
+      Plan du site
+    </li>
+  </ul>
+</div>
+
+<!-- mise en place lien de navigation -->
+
+<div class=" text-3xl">
+  <h2 class="text-5xl font-bold mb-3 text-center lg:mb-15">Plan du site</h2>
+
+  <div class="flex flex-col lg:flex-row items-center lg:items-start mt-8 justify-center lg:text-3xl gap-12">
+    <div *ngFor="let item of menuSitemap" class="flex flex-col items-start">
+      <!-- Lien principal -->
+      <a [routerLink]="item.link" class="font-bold text-3xl hover:text-[#34219A] mb-2">
+        {{ item.label }}
+      </a>
+
+      <!-- Sous-éléments -->
+      <ul *ngIf="item.sub" class="space-y-6 list-disc list-inside pl-4 mt-6">
+        <li *ngFor="let subItem of item.sub">
+          <a [routerLink]="subItem.link" class="hover:text-yellow-400">
+            {{ subItem.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

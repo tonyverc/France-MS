@@ -1,40 +1,32 @@
-<div class="relative w-full h-screen">
+<div class="relative w-full h-screen lg:h-[80vh] overflow-hidden">
   <!-- Vidéo full screen -->
   <video
-    autoplay
     muted
-    loop
     playsinline
-    class="w-full h-full object-cover lg:mt-5 mt-5"
+    autoplay
+    loop
+    class="inset w-full h-full object-cover lg:mt-5 mt-5 z-[-1]"
+    
   >
-    <source src="assets/vidéos/vidéo-fms.mp4" type="video/mp4" />
+    <source src="assets/vidéos/video-fms.mp4" type="video/mp4" />
     Votre navigateur ne supporte pas la balise vidéo.
   </video>
 
   <!-- Texte superposé sur vidéo -->
-  <div
-    class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start lg:mt-30 mt-10"
-  >
-    <h1 class="text-3xl sm:text-5xl font-bold mb-4 text-[#424141]">
-      Bienvenue chez France Marine Services
-    </h1>
-    <p class="text-lg sm:text-2xl text-[#424141]">
-      la performance et la fiabilité au service de vos péniches.
-    </p>
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start lg:mt-30 mt-10">
+    <h1 class="lg:text-7xl sm:text-5xl font-bold mb-4 text-[#424141]">{{ videoTitle }}</h1>
+    <p class="lg:text-4xl sm:text-2xl text-[#424141]">{{ videoDescription }}</p>
   </div>
 </div>
 
 <!-- Création des cartes de produits -->
-<div
-  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center"
->
+<div class="flex flex-col lg:flex-row text-xl">
   <ng-container *ngFor="let card of cards">
     <app-card-produits
       *ngIf="card.imageUrl && card.description && card.link"
       [imageUrl]="card.imageUrl"
       [description]="card.description"
-      [link]="card.link"
-    >
+      [link]="card.link">
     </app-card-produits>
   </ng-container>
 </div>
@@ -46,25 +38,19 @@
     <!-- Texte -->
     <div class="flex flex-col text-left lg:w-1/2 ">
       <h2 class="text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
-      <p class="text-xl text-white">{{ titleDescription }}</p>
+      <p class="text-xl text-white">{{ Description }}</p>
     </div>
 
     <!-- Carousel -->
-    <div class="lg:w-1/2">
-      <div class="carousel rounded-box w-full">
-        <div class="carousel-item w-1/2">
+    <div class="lg:w-1/2 w-full">
+      <div class="carousel rounded-box w-1/2 ">
+        <div class="carousel-item w-full">
           <img src="assets/images/peniche-lyonnaise.jpg" class="w-full" />
         </div>
-        <div class="carousel-item w-1/2">
-          <img src="assets/images/peniche-2.jpg" class="w-full" />
-        </div>
-        <div class="carousel-item w-1/2">
+        <div class="carousel-item w-full">
           <img src="assets/images/huile.jpg" class="w-full" />
         </div>
-        <div class="carousel-item w-1/2">
-          <img src="" class="w-full" />
-        </div>
-        <div class="carousel-item w-1/2">
+        <div class="carousel-item w-full">
           <img src="assets/images/peniche-2.jpg" class="w-full" />
         </div>
       </div>

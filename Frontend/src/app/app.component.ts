@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
-import { CardProduitsComponent } from './components/card-produits/card-produits.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, HomeComponent, CardProduitsComponent, FooterComponent],
+  standalone: true,
+  imports: [ HeaderComponent, FooterComponent, CommonModule, RouterLink, RouterOutlet, RouterModule ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
