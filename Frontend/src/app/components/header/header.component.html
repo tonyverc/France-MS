@@ -4,17 +4,26 @@
 
   <!-- Barre de recherche centrée -->
   <!-- Ligne logo + bouton -->
-  <div class="flex w-full justify-between items-center mb-2">
-    <img src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="max-w-32 sm:max-w-48 w-auto"/>
-    <label class="input flex items-center rounded-xl">
-      <app-icon name="search"></app-icon>
-      <input type="search" placeholder="Rechercher" class="px-2 py-1 rounded w-full text-xl text-black"/>
-    </label>
-    <button class="btn bg-[#A39F22] text-white rounded-xl self-start flex items-center px-2 py-1 sm:px-4 sm:py-2">
-      <app-icon name="user"></app-icon>
-      <span class="text-lg">Connexion administration</span>
-    </button>
-  </div>
+<div class="flex flex-col sm:flex-row w-full justify-between items-center gap-2 mb-2">
+  
+  <!-- Bouton (au-dessus en mobile) -->
+  <button class="order-2 sm:order-3 btn bg-[#A39F22] text-white rounded-xl flex items-center self-start justify-center w-full sm:w-auto">
+    <app-icon name="user"></app-icon>
+    <span class="text-lg">Connexion administration</span>
+  </button>
+
+  <!-- Logo -->
+  <img src="assets/images/Logo-France-Marine-Services.png" 
+       alt="Logo" 
+       class="order-1 sm:order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
+
+  <!-- Barre de recherche -->
+  <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto">
+    <app-icon name="search"></app-icon>
+    <input type="search" placeholder="Rechercher" class="rounded w-full sm:w-auto text-xl text-black"/>
+  </label>
+
+</div>
 
 
   <!-- Menu desktop -->

@@ -1,0 +1,16 @@
+<div *ngIf="loading">Chargement des produits...</div>
+
+<div *ngIf="produits.length > 0">
+  <ul>
+    <li *ngFor="let p of produits">
+      <h4>{{ p.nom }}</h4>
+      <img [src]="p.image" alt="{{ p.nom }}" width="100">
+      <p>{{ p.description }}</p>
+      <a [href]="p.fiche_technique" target="_blank">Fiche technique</a>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!loading && produits.length === 0">
+  Aucun produit pour cette sous-catégorie.
+</div>
