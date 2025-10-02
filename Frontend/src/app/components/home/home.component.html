@@ -6,37 +6,41 @@
     autoplay
     loop
     class="inset w-full h-full object-cover lg:mt-5 mt-5 z-[-1]"
-    
   >
     <source src="assets/vidéos/video-fms.mp4" type="video/mp4" />
     Votre navigateur ne supporte pas la balise vidéo.
   </video>
 
   <!-- Texte superposé sur vidéo -->
-  <div class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start lg:mt-30 mt-10">
-    <h1 class="lg:text-7xl sm:text-5xl font-bold mb-4 text-[#424141]">{{ videoTitle }}</h1>
-    <p class="lg:text-4xl sm:text-2xl text-[#424141]">{{ videoDescription }}</p>
+  <div
+    class="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 self-start lg:mt-30 mt-10"
+  >
+    <h1 class="lg:text-7xl text-3xl font-bold mb-4 text-[#424141]">
+      {{ videoTitle }}
+    </h1>
+    <p class="lg:text-4xl text-xl text-[#424141]">{{ videoDescription }}</p>
   </div>
 </div>
 
-<!-- Création des cartes de produits -->
-<div class="flex flex-col lg:flex-row text-xl">
-  <ng-container *ngFor="let card of cards">
+<!-- Création des cartes dynamiques -->
+<div class="min-h-100 flex flex-col items-center justify-between p-8 lg:flex-row">
+  <ng-container *ngFor="let cat of categories">
     <app-card-produits
-      *ngIf="card.imageUrl && card.description && card.link"
-      [imageUrl]="card.imageUrl"
-      [description]="card.description"
-      [link]="card.link">
+      [imageUrl]="cat.imageUrl!"
+      [description]="cat.description!"
+      [link]="['/produits', cat.id]"
+      [buttonText]="'Voir nos ' + cat.nom.toLowerCase()">
     </app-card-produits>
   </ng-container>
 </div>
 
 <!-- Section "À propos de nous" -->
-<div class="bg-[#424141] py-12 px-4 sm:px-6 lg:px-8 ">
-  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-8">
-    
+<div class="bg-[#424141] py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-8"
+  >
     <!-- Texte -->
-    <div class="flex flex-col text-left lg:w-1/2 ">
+    <div class="flex flex-col text-left lg:w-1/2">
       <h2 class="text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
       <p class="text-xl text-white">{{ Description }}</p>
     </div>
@@ -44,18 +48,29 @@
     <!-- images de la div a propos -->
 
     <div class="flex w-full flex-col lg:flex-row">
-      <div class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center overflow-hidden">
-        <img [src]="img1" alt="peniche sur l'eau" class="w-full h-full object-cover" />
+      <div
+        class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center justify-around overflow-hidden"
+      >
+        <img
+          [src]="img1"
+          alt="peniche sur l'eau"
+          class="w-full h-full object-cover"
+        />
       </div>
 
-      <div class="divider lg:divider-horizontal before:bg-white after:bg-white"></div>
+      <div
+        class="divider lg:divider-horizontal before:bg-white after:bg-white"
+      ></div>
 
-      <div class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center overflow-hidden">
-        <img [src]="img2" alt="peniche de lyon sur l'eau" class="w-full h-full object-cover" />
+      <div
+        class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center overflow-hidden"
+      >
+        <img
+          [src]="img2"
+          alt="peniche de lyon sur l'eau"
+          class="w-full h-full object-cover"
+        />
       </div>
     </div>
-
   </div>
 </div>
-
-

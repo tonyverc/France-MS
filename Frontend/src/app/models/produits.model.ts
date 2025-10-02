@@ -4,6 +4,7 @@ export interface Produit {
   image: string;
   description: string;
   fiche_technique: string;
+  sousCategorie: string;
 }
 
 export interface SousCategorie {
@@ -15,5 +16,8 @@ export interface SousCategorie {
 export interface Categorie {
   id: number;
   nom: string;
-  sous_categories: SousCategorie[];
+  sous_categories?: SousCategorie[];
+  imageUrl?: string;
+  description?: string;
+  link?: string;
 }

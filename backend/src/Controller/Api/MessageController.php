@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MessageController extends AbstractController
 {
-    // route vers l'API pour récuperer les donnéees soumise du formulaire
+    // route vers l'API pour poster les donnéees soumise du formulaire
     #[Route('/api/message', name: 'api_message_', methods: ['POST'])]
-    public function index(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -31,5 +31,24 @@ class MessageController extends AbstractController
             'message' => '✅ Message envoyé avec succès !',
 
         ]);
+    }
+
+    // route vers l'API pour recuperer la liste des messages
+    #[Route('/api/message', name: 'api_message_list', methods: ['GET'])]
+    public function list(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $messages = $em->getRepository(Message::class)->findAll();
+        $data = [];
+        foreach ($messages as $message) {
+            $data[] = [
+                'id' => $message->getId(),
+                'nom' => $message->getNom(),
+                'email' => $message->getEmail(),
+                'telephone' => $message->getTelephone(),
+                'contenu' => $message->getContenu(),
+                'date_envoi' => $message->getDateEnvoi(),
+            ];
+        }
+        return new JsonResponse($data);
     }
 }

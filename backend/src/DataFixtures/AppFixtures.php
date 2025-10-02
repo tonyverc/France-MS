@@ -7,73 +7,57 @@ use App\Entity\SousCategorie;
 use App\Entity\Produit;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $categorie = new Categorie();
-        $categorie->setNom('Lubrifiants');
+        $faker = Factory::create('fr_FR');
 
-        $categorie2= new Categorie();
-        $categorie2->setNom('graisses');
+        // Images par catégorie (placeholder ou réelles)
+        $imagesCategories = [
+            'Lubrifiants' => 'https://via.placeholder.com/400x200?text=Lubrifiants',
+            'Filtres' => 'https://via.placeholder.com/400x200?text=Filtres',
+            'Graisses' => 'https://via.placeholder.com/400x200?text=Graisses',
+        ];
 
-        $sousCategorie4 = new SousCategorie();
-        $sousCategorie4->setNom('graisse moteur');
-        $sousCategorie4->setCategorie($categorie2);
+        $categories = [];
+        foreach (['Lubrifiants', 'Filtres', 'Graisses'] as $catNom) {
+            $cat = new Categorie();
+            $cat->setNom($catNom);
+            $manager->persist($cat);
+            $categories[] = $cat;
+        }
 
-        $sousCategorie = new SousCategorie();
-        $sousCategorie->setNom('Huile moteur');
-        $sousCategorie->setCategorie($categorie);
+        foreach ($categories as $cat) {
+            $sousCategoriesDuCat = [];
 
-        $sousCategorie2 = new SousCategorie();
-        $sousCategorie2->setNom('Huile transmission');
-        $sousCategorie2->setCategorie($categorie);
+            for ($i = 0; $i < 2; $i++) {
+                $sousCat = new SousCategorie();
+                $sousCat->setNom($faker->word())
+                         ->setCategorie($cat);
+                $manager->persist($sousCat);
+                $sousCategoriesDuCat[] = $sousCat;
+            }
 
-        $sousCategorie3 = new SousCategorie();
-        $sousCategorie3->setNom('Huile frein');
-        $sousCategorie3->setCategorie($categorie);
+            $nbProduits = $faker->numberBetween(5, 8);
+            for ($j = 0; $j < $nbProduits; $j++) {
+                $produit = new Produit();
+                $produit->setNom($faker->word())
+                        ->setDescription($faker->sentence(6))
+                        ->setFicheTechnique($faker->sentence(10))
+                        // Image aléatoire pour le produit
+                        ->setImage("https://picsum.photos/400/300?random=" . $faker->numberBetween(1, 1000));
 
-        $produit = new Produit();
-        $produit->setNom('Huile moteur 5W30')
-                ->setImage('huile.jpg')
-                ->setDescription('Huile haute performance')
-                ->setFicheTechnique('fiche.pdf');
-        $produit->addSousCategorie($sousCategorie);
+                $randomSousCats = $faker->randomElements($sousCategoriesDuCat, $faker->numberBetween(1, 2));
+                foreach ($randomSousCats as $sousCat) {
+                    $produit->addSousCategorie($sousCat);
+                }
 
-        $produit2 = new Produit();
-        $produit2->setNom('Huile moteur 10W40')
-                ->setImage('huile.jpg')
-                ->setDescription('Huile haute performance')
-                ->setFicheTechnique('fiche.pdf');
-        $produit2->addSousCategorie($sousCategorie);
-
-        $produit3 = new Produit();
-        $produit3->setNom('Huile moteur 20W50')
-                ->setImage('huile.jpg')
-                ->setDescription('Huile haute performance')
-                ->setFicheTechnique('fiche.pdf');
-        $produit3->addSousCategorie($sousCategorie);
-
-        $produit4 = new Produit();
-        $produit4->setNom('graisse castrol')
-                ->setImage('graisse.jpg')
-                ->setDescription('graisse haute performance')
-                ->setFicheTechnique('fiche.pdf');
-        $produit4->addSousCategorie($sousCategorie4);
-
-
-
-        $manager->persist($categorie);
-        $manager->persist($categorie2);
-        $manager->persist($sousCategorie);
-        $manager->persist($sousCategorie2);
-        $manager->persist($sousCategorie3);
-        $manager->persist($sousCategorie4);
-        $manager->persist($produit);
-        $manager->persist($produit2);
-        $manager->persist($produit3);
-        $manager->persist($produit4);
+                $manager->persist($produit);
+            }
+        }
 
         $manager->flush();
     }

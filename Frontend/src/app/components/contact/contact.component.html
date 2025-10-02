@@ -1,6 +1,6 @@
 <!-- mise en place file d'ariane --> 
 
-<div class="breadcrumbs text-2xl p-3">
+<div class="breadcrumbs text-2xl p-6">
   <ul class="flex items-center space-x-2">
     <!-- Accueil -->
     <li class="flex items-center">
@@ -25,6 +25,12 @@
   </ul>
 </div>
 
+<!-- Alerte personnalisée pour envoi de message reussi ou echec -->
+<div *ngIf="alertMessage" class="mt-4">
+  <div [ngClass]="alertType === 'success' ? 'alert alert-success' : 'alert alert-error'">
+    <span class="font-bold text-xl">{{ alertMessage }}</span>
+  </div>
+</div>
 
 <div class="w-auto mx-auto p-4 bg-gray-100 rounded-xl shadow-md flex flex-col lg:flex-row gap-4">
   
@@ -37,7 +43,7 @@
   <div class="w-auto  lg:w-1/2 flex flex-col border-3 border-black pt-2 p-2">
     <h2 class="text-3xl font-bold mb-4 text-center">Formulaire de contact</h2>
 
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-4 text-2xl">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-5 lg:space-y-12 text-2xl">
       <!-- Nom -->
       <div>
         <label class="block font-semibold">Nom *</label>
@@ -86,14 +92,7 @@
             Envoyer
         </button>
         </div>
-
-
     </form>
-        <!-- Modal de confirmation -->
-        <div *ngIf="successMessage" class="toast toast-top toast-center">
-            <div class="alert alert-success">
-                <span>{{ successMessage }}</span>
-            </div>
-        </div>
   </div>
 </div>
+

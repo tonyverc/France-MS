@@ -24,21 +24,27 @@ export class ContactComponent {
     });
   }
 
-successMessage:string = '';
+alertMessage: string | null = null;
+alertType: 'success'| 'error' = 'success';
 
+// soumission du formulaire a l'api
 onSubmit() {
   if (this.contactForm.valid) {
     this.http.post<{ success: boolean; message: string }>(
       'http://localhost:8000/api/message',
       this.contactForm.value
     ).subscribe({
-      next: (res) => {
-        this.successMessage = res.message; // 🔥 stock le message
+
+      //gestion du message de confirmation ou echec de l'envoi du message
+      next: () => {
+        this.alertMessage = '✅ Votre message a bien été envoyé !';
+        this.alertType = 'success';
         this.contactForm.reset();
-        setTimeout(() => this.successMessage = '', 4000); // auto-disparition
+        setTimeout(() => this.alertMessage = '', 4000); // auto-disparition de l'alerte aprés 4s
       },
       error: () => {
-        this.successMessage = "❌ Erreur lors de l'envoi du message.";
+        this.alertMessage = "❌ Erreur lors de l'envoi du message.";
+        this.alertType = 'error';
       }
     });
   }
