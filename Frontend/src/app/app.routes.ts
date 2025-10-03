@@ -4,10 +4,12 @@ import { HomeComponent } from './components/home/home.component';
 import { MentionsComponent } from './components/mentions/mentions.component';
 import { ProduitsComponent } from './components/produits/produits.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 
 export const routes: Routes = [
 
   {path:'', component: HomeComponent},
+  {path: 'login', component: AdminLoginComponent},
   {path: 'produits/:id', component: ProduitsComponent},
   {path: 'lubrifiants', component: HomeComponent},
   {path: 'graisses', component: HomeComponent},

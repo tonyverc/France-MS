@@ -33,7 +33,9 @@ export class SitemapComponent {
 
     { label: 'Mentions légales', link: '/mentions-legales' },
     
-    { label: 'Plan du site', link: '/plan-du-site' }
+    { label: 'Plan du site', link: '/plan-du-site' },
+
+    { label: 'Connexion Admin', link: '/login' }
   ];
 
 }
