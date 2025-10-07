@@ -11,6 +11,8 @@ export const routes: Routes = [
   {path:'', component: HomeComponent},
   {path: 'login', component: AdminLoginComponent},
   {path: 'produits/:id', component: ProduitsComponent},
+  {path: 'categories/:id/produits ', component: ProduitsComponent},
+  {path: 'souscategorie/:id/produits', component: ProduitsComponent},
   {path: 'lubrifiants', component: HomeComponent},
   {path: 'graisses', component: HomeComponent},
   {path: 'filtrations', component: HomeComponent},

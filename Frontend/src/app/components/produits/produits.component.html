@@ -1,4 +1,4 @@
-<h2 class="text-3xl font-bold mb-6 text-center">Produits de la catégorie </h2>
+<h2 class="text-3xl font-bold mt-6 text-center">Produits de la catégorie {{ categorieNom}} </h2>
 
 
 <!-- mise en place file d'ariane --> 
@@ -53,7 +53,6 @@
 
     <!-- Bouton vers détails et tetecharger la fiche technique -->
     <div class="flex overflow-hidden">
-      <button class="btn bg-[#A39F22] text-white mt-4 px-4 py-2 rounded-xl">Voir détails</button>
       <a [href]="prod.fiche_technique" download
         class="btn bg-[#A39F22] text-white mt-4 px-4 py-2 rounded-xl ml-2">
         Télécharger la fiche technique

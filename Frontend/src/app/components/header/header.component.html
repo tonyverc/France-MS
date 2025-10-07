@@ -1,86 +1,74 @@
-<!-- Navbar principale -->
 <div class="bg-[#424141] shadow-sm p-2 flex flex-col lg:flex-col sticky top-0 left-0 w-full z-50 h-auto">
 
-
-  <!-- Barre de recherche centrée -->
-  <!-- Ligne logo + bouton -->
-<div class="flex flex-col sm:flex-row w-full justify-between items-center gap-2 mb-2">
-  
-  <!-- Bouton (au-dessus en mobile) -->
-  <button class="order-2 sm:order-3 btn bg-[#A39F22] text-white rounded-xl flex items-center self-start justify-center w-full sm:w-auto">
-    <app-icon name="user"></app-icon>
-    <a routerLink="login" class="text-lg">connexion administration</a>
-  </button>
-
-  <!-- Logo -->
-  <img src="assets/images/Logo-France-Marine-Services.png" 
-       alt="Logo" 
-       class="order-1 sm:order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
-
-  <!-- Barre de recherche -->
-  <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto">
-    <app-icon name="search"></app-icon>
-    <input type="search" placeholder="Rechercher" class="rounded w-full sm:w-auto text-xl text-black"/>
-  </label>
-
-</div>
-
+  <!-- Logo + Connexion + Recherche -->
+  <div class="flex flex-col sm:flex-row w-full justify-between items-center gap-2 mb-2">
+    <button class="order-2 sm:order-3 btn bg-[#A39F22] text-white rounded-xl flex items-center self-start justify-center w-full sm:w-auto">
+      <app-icon name="user"></app-icon>
+      <a routerLink="login" class="text-lg">Connexion Administration</a>
+    </button>
+    <img src="assets/images/Logo-France-Marine-Services.png" 
+         alt="Logo" 
+         class="order-1 sm:order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
+    <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto">
+      <app-icon name="search"></app-icon>
+      <input type="search" placeholder="Rechercher" class="rounded w-full sm:w-auto text-xl text-black"/>
+    </label>
+  </div>
 
   <!-- Menu desktop -->
   <div class="hidden lg:flex justify-center">
     <ul class="flex space-x-12">
-      <li *ngFor="let item of menuItems" class="text-white font-bold text-center text-2xl">
-        <!-- Item avec sous-menu -->
-        <details class="inline-block relative" *ngIf="item.sub; else desktopSingleItem">
-          <summary class="inline-flex items-center space-x-2 cursor-pointer hover:text-yellow-400">
-            <app-icon [name]="item.icon"></app-icon>
-            <span>{{ item.label }}</span>
-          </summary>
-          <ul class="absolute left-0 mt-1 p-2 bg-[#424141] rounded shadow z-10">
-            <li *ngFor="let sub of item.sub">
-              <a class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer" >{{ sub }}</a>
-            </li>
-          </ul>
-        </details>
-        <!-- Item simple -->
-        <ng-template #desktopSingleItem>
-          <a [routerLink]="item.path" class="inline-flex items-center space-x-2 hover:text-yellow-400 cursor-pointer">
-            <app-icon [name]="item.icon"></app-icon>
-            <span>{{ item.label }}</span>
-          </a>
-        </ng-template>
+      <li class="relative group">
+        <a routerLink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+          <app-icon name="home"></app-icon> Accueil
+        </a>
+      </li>
+      
+
+      <!-- Boucle sur catégories -->
+      <li *ngFor="let cat of categories" class="relative group">
+        <a (mouseover)="selectCategorie(cat.id)" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
+          <app-icon name="folder"></app-icon> {{ cat.nom }}
+        </a>
+
+        <!-- Sous-catégories au hover -->
+        <ul *ngIf="sousCategories?.length && selectCategorieId === cat.id"
+            class="absolute left-0 mt-2 p-2 bg-[#424141] text-white text-xl rounded shadow z-10 opacity-0 group-hover:opacity-100 transition duration-300  group-hover:pointer-events-auto">
+          <li *ngFor="let sub of sousCategories">
+            <a [routerLink]="['/produits', sub.id]" (click)="selectSousCategorie(sub.id)" class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer">{{ sub.nom }}</a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="relative group">
+        <a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+          <app-icon name="contact"></app-icon> Contact
+        </a>
       </li>
     </ul>
   </div>
 
-  <!-- Dropdown mobile -->
+  <!-- Mobile menu (click) -->
   <div class="lg:hidden mt-2">
     <div class="dropdown">
-      <label tabindex="0" class="btn btn-ghost  ">
+      <label tabindex="0" class="btn btn-ghost">
         <app-icon name="burger" class="text-white"></app-icon>
       </label>
       <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black text-xl">
-        <li *ngFor="let item of menuItems">
-          <details *ngIf="item.sub; else mobileSingleItem">
-            <summary class="flex items-center space-x-2">
-              <app-icon [name]="item.icon"></app-icon>
-              <span>{{ item.label }}</span>
-            </summary>
-            <ul class="p-2">
-              <li *ngFor="let sub of item.sub">
-                <a >{{ sub }}</a>
+        <li><a routerLink="">Accueil</a></li>
+        <li *ngFor="let cat of categories">
+          <details>
+            <summary>{{ cat.nom }}</summary>
+            <ul>
+              <li *ngFor="let sub of cat.sous_categories">
+                <a (click)="selectSousCategorie(sub.id)">{{ sub.nom }}</a>
               </li>
             </ul>
           </details>
-          <ng-template #mobileSingleItem>
-            <a [routerLink]="item.path" class="flex items-center space-x-2">
-              <app-icon [name]="item.icon"></app-icon>
-              <span>{{ item.label }}</span>
-            </a>
-          </ng-template>
         </li>
+        <li><a routerLink="contact">Contact</a></li>
       </ul>
     </div>
   </div>
-
 </div>
+

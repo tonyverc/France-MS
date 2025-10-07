@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 #[Route('/api')]
 class ProduitController extends AbstractController
 {
-    // 1️⃣ Tous les produits d'une catégorie (toutes sous-catégories comprises)
+    // Tous les produits d'une catégorie (toutes sous-catégories comprises)
     #[Route('/categories/{id}/produits', name: 'api_categorie_produits', methods: ['GET'])]
     public function produitsCategorie(int $id, EntityManagerInterface $em): JsonResponse
     {
@@ -35,7 +35,7 @@ class ProduitController extends AbstractController
         return $this->json($produits);
     }
 
-    // 2️⃣ Tous les produits d'une sous-catégorie
+    //  Tous les produits d'une sous-catégorie
     #[Route('/souscategories/{id}/produits', name: 'api_souscategorie_produits', methods: ['GET'])]
     public function produitsSousCategorie(int $id, EntityManagerInterface $em): JsonResponse
     {
@@ -57,7 +57,7 @@ class ProduitController extends AbstractController
         return $this->json($produits);
     }
 
-    // 3️⃣ Liste des catégories principales
+    // Liste des catégories principales
     #[Route('/categories', name: 'api_categories', methods: ['GET'])]
     public function listCategories(EntityManagerInterface $em): JsonResponse
     {
@@ -70,5 +70,23 @@ class ProduitController extends AbstractController
             ];
         }
         return $this->json($data);
+    }
+
+    // Liste des sous-catégories d'une catégorie
+    #[Route('/categories/{id}/souscategories', name: 'api_souscategories', methods: ['GET'])]
+    public function listSousCategories(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $categorie = $em->getRepository(Categorie::class)->find($id);
+        if (!$categorie) return $this->json(['error' => 'Catégorie introuvable'], 404);
+
+        $sousCategories = [];
+        foreach ($categorie->getSousCategorie() as $sousCat) {
+            $sousCategories[] = [
+                'id' => $sousCat->getId(),
+                'nom' => $sousCat->getNom()
+            ];
+        }
+
+        return $this->json($sousCategories);
     }
 }

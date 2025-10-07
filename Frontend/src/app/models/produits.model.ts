@@ -16,6 +16,7 @@ export interface SousCategorie {
 export interface Categorie {
   id: number;
   nom: string;
+  icon?: string;
   sous_categories?: SousCategorie[];
   imageUrl?: string;
   description?: string;
