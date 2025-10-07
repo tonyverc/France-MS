@@ -32,7 +32,7 @@
 <div *ngIf="produits.length > 0; else aucunProduit" 
      class="flex flex-col-2 lg:flex-row flex-wrap justify-center gap-6">
   <div *ngFor="let prod of produitsPage" 
-       class="bg-white rounded-2xl shadow-xl p-6 m-2 flex flex-col items-center lg:w-1/5 text-center shadow-[#424141] hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out">
+       class="bg-white rounded-2xl shadow-xl p-6 m-2 flex flex-col items-center lg:w-1/5 text-center shadow-[#424141] hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out overflow-hidden">
 
     <!-- Image si tu en as -->
     <img *ngIf="prod.image" [src]="prod.image" alt="{{ prod.nom }}" 
@@ -42,14 +42,11 @@
     <h3 class="text-3xl font-semibold mb-2">{{ prod.nom }}</h3>
 
     <!-- Description -->
-    <p class="text-xl mb-4">{{ prod.description }}</p>
-
-    <!-- Fiche technique -->
-    <p class="text-lg text-gray-600">{{ prod.fiche_technique }}</p>
+    <p class="text-xl mb-4 line-clamp-8 ">{{ prod.description }}</p>
 
     <!-- Bouton vers détails et tetecharger la fiche technique -->
     <div class="flex overflow-hidden">
-      <a [href]="prod.fiche_technique" download
+      <a [href]="getFicheTechniqueUrl(prod.fiche_technique)" download
         class="btn bg-[#A39F22] text-white mt-4 px-4 py-2 rounded-xl ml-2">
         Télécharger la fiche technique
       </a>

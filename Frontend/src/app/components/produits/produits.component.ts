@@ -91,4 +91,9 @@ export class ProduitsComponent implements OnInit {
   selectSousCategorie(id: number): void {
     this.produitService.setSousCategorieActive(id);
   }
+
+  // 🔹 Génère l’URL complète pour télécharger la fiche technique
+getFicheTechniqueUrl(filename: string) {
+  return `http://127.0.0.1:8000/uploads/fiches_techniques/${encodeURIComponent(filename)}`;
+}
 }
