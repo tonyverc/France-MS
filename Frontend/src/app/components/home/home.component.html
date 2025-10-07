@@ -28,7 +28,7 @@
     <app-card-produits
       [imageUrl]="cat.imageUrl!"
       [description]="cat.description!"
-      [link]="['/produits', cat.id]"
+      [link]="['produits/categories', cat.id]"
       [buttonText]="'Voir nos ' + cat.nom.toLowerCase()">
     </app-card-produits>
   </ng-container>
@@ -42,7 +42,7 @@
     <!-- Texte -->
     <div class="flex flex-col text-left lg:w-1/2">
       <h2 class="text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
-      <p class="text-xl text-white">{{ Description }}</p>
+      <p class="text-xl text-white">{{ description }}</p>
     </div>
 
     <!-- images de la div a propos -->

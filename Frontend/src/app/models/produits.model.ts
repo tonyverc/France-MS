@@ -10,7 +10,7 @@ export interface Produit {
 export interface SousCategorie {
   id: number;
   nom: string;
-  categorie : Categorie;
+  categorie : Categorie [];
 }
 
 export interface Categorie {

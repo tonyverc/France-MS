@@ -89,4 +89,17 @@ class ProduitController extends AbstractController
 
         return $this->json($sousCategories);
     }
+
+    #[Route('/souscategories/{id}', name: 'api_souscategorie_detail', methods: ['GET'])]
+    public function detailSousCategorie(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $sousCat = $em->getRepository(SousCategorie::class)->find($id);
+        if (!$sousCat) return $this->json(['error' => 'Sous-catégorie introuvable'], 404);
+
+        return $this->json([
+            'id' => $sousCat->getId(),
+            'nom' => $sousCat->getNom(),
+            'categorie' => $sousCat->getCategorie()->getNom()
+        ]);
+    }
 }

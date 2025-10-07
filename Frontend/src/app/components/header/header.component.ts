@@ -1,86 +1,62 @@
-import { Produit, SousCategorie } from './../../models/produits.model';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { ProduitService, Categorie } from '../../services/produits.service';
+import { SousCategorie } from '../../models/produits.model';
 import { IconComponent } from '../icon/icon.component';
-import { RouterLink } from '@angular/router';
-import { Categorie } from '../../models/produits.model';
-import { ProduitService } from '../../services/produits.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, IconComponent, RouterLink ],
+  imports: [CommonModule, RouterModule, IconComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
-
-  produitsAffiches : Produit[] = [];
   categories: Categorie[] = [];
   sousCategories: SousCategorie[] = [];
-  selectCategorieId: number | null = null;
-  selectSousCategorieId: number | null = null;
+  selectedCategorieId: number | null = null;
   sousCategoriesMap: { [categorieId: number]: SousCategorie[] } = {};
 
-  constructor(private produitService: ProduitService) {}
+  constructor(private produitService: ProduitService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadCategories();
-  }
-
-  //recuperer les categories
-  loadCategories() {
     this.produitService.getCategories().subscribe({
-      next: (categories) => {
-        this.categories = categories.map((cat) => ({
-          ...cat,
-          icon: this.getIconForCategory(cat.nom) // Associer une icône basée sur le nom de la catégorie
-        }));
-      },
-      error: (err) => console.error('Erreur récupération catégories :', err),
+      next: (data) => (this.categories = data),
     });
   }
 
-
-  // Associer une icône à chaque catégorie basée sur son nom
-  getIconForCategory(nom: string): string {
-    switch (nom.toLowerCase()) {
-      case 'lubrifiants': return 'droplet';
-      case 'graisses' : return 'engrenage';
-      case 'filtrations' : return 'funnel';
-      default: return 'folder';
+    // Associer une icône à chaque catégorie basée sur son nom
+    getIconForCategory(nom: string): string {
+      switch (nom.toLowerCase()) {
+        case 'lubrifiants': return 'droplet';
+        case 'graisses' : return 'engrenage';
+        case 'filtrations' : return 'funnel';
+        default: return 'folder';
+      }
     }
-  }
 
-  // recuperer les sous-categories au clique d'une categorie
-  selectCategorie(categorieId: number) {
-    this.selectCategorieId = categorieId;
-    this.selectSousCategorieId = null; // Réinitialiser la sous-catégorie sélectionnée
+
+selectCategorie(categorieId: number) {
+  console.log('Catégorie sélectionnée ID :', categorieId);
+  
+  this.selectedCategorieId = categorieId;
+
+  const catExists = this.categories.find(cat => cat.id === categorieId);
+  if (!catExists) {
+    console.error(`Catégorie avec ID ${categorieId} non trouvée.`);
+    return;
+  }
+  
+  if (!this.sousCategoriesMap[categorieId]) {
     this.produitService.getSousCategories(categorieId).subscribe({
-      next: (sousCategories) => {
-        this.sousCategories = sousCategories;
+      next: (data) => {
+        this.sousCategoriesMap[categorieId] = data;
       },
-      error: (err) => console.error('Erreur récupération sous-catégories :', err),
+      error: err => console.error(err)
     });
   }
-
-  // Sélection d'une sous-catégorie
-  selectSousCategorie(sousCategorieId: number) {
-    this.selectSousCategorieId = sousCategorieId;
-    this.produitService.getProduitsBySousCategorie(sousCategorieId).subscribe({
-      next: produits => this.produitsAffiches = produits,
-      error: err => console.error('Erreur produits sous-catégorie :', err)
-    });
-  }
-
-  //récuperer les produits d'une sous-catégorie
-  produitsBySousCategorie(sousCategorieId: number) {
-    this.produitService.getProduitsBySousCategorie(sousCategorieId).subscribe({
-      next: (produits) => {
-        console.log(produits);
-      },
-      error: (err) => console.error('Erreur récupération produits sous-catégorie :', err),
-    });
-
- 
 }
-}
+selectSousCategorie(sousCategorieId: number) {
+  console.log('Sous-catégorie sélectionnée ID :', sousCategorieId);
+  this.produitService.setSousCategorieActive(sousCategorieId);
+}}

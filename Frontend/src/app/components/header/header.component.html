@@ -1,74 +1,91 @@
-<div class="bg-[#424141] shadow-sm p-2 flex flex-col lg:flex-col sticky top-0 left-0 w-full z-50 h-auto">
+<!-- Navbar principale -->
+<nav class="bg-[#424141] shadow-sm p-2 sticky top-0 left-0 w-full z-50 ">
 
-  <!-- Logo + Connexion + Recherche -->
-  <div class="flex flex-col sm:flex-row w-full justify-between items-center gap-2 mb-2">
-    <button class="order-2 sm:order-3 btn bg-[#A39F22] text-white rounded-xl flex items-center self-start justify-center w-full sm:w-auto">
+  <!-- En-tête : logo / recherche / connexion -->
+  <div class="flex sm:flex-col lg:flex-row justify-between items-center gap-2 mb-2">
+    
+    <!-- Bouton admin -->
+    <a routerLink="login"
+       class="order-2 sm:order-3 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
       <app-icon name="user"></app-icon>
-      <a routerLink="login" class="text-lg">Connexion Administration</a>
-    </button>
-    <img src="assets/images/Logo-France-Marine-Services.png" 
-         alt="Logo" 
-         class="order-1 sm:order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
-    <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto">
+      <span class="ml-2 text-lg">Connexion Administration</span>
+    </a>
+
+    <!-- Logo -->
+    <img src="assets/images/Logo-France-Marine-Services.png"
+         alt="Logo"
+         class="order-1 max-w-32 sm:max-w-48 w-auto" />
+
+    <!-- Barre de recherche -->
+    <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto self-center">
       <app-icon name="search"></app-icon>
-      <input type="search" placeholder="Rechercher" class="rounded w-full sm:w-auto text-xl text-black"/>
+      <input type="search" placeholder="Rechercher"
+             class="rounded w-full text-xl text-black px-2 py-1 outline-none" />
     </label>
   </div>
 
   <!-- Menu desktop -->
-  <div class="hidden lg:flex justify-center">
-    <ul class="flex space-x-12">
-      <li class="relative group">
-        <a routerLink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
-          <app-icon name="home"></app-icon> Accueil
-        </a>
-      </li>
-      
+  <ul class="hidden lg:flex justify-center space-x-12">
+    <li>
+      <a routerLink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+        <app-icon name="home"></app-icon> <span>Accueil</span>
+      </a>
+    </li>
 
-      <!-- Boucle sur catégories -->
-      <li *ngFor="let cat of categories" class="relative group">
-        <a (mouseover)="selectCategorie(cat.id)" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
-          <app-icon name="folder"></app-icon> {{ cat.nom }}
-        </a>
+    <!-- Catégories -->
+    <li *ngFor="let cat of categories" class="relative group">
+      <button (mouseenter)="selectCategorie(cat.id)"
+              class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer bg-transparent border-none">
+        <span>{{ cat.nom }}</span>
+      <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+      </button>
 
-        <!-- Sous-catégories au hover -->
-        <ul *ngIf="sousCategories?.length && selectCategorieId === cat.id"
-            class="absolute left-0 mt-2 p-2 bg-[#424141] text-white text-xl rounded shadow z-10 opacity-0 group-hover:opacity-100 transition duration-300  group-hover:pointer-events-auto">
-          <li *ngFor="let sub of sousCategories">
-            <a [routerLink]="['/produits', sub.id]" (click)="selectSousCategorie(sub.id)" class="block px-3 py-1 hover:bg-[#A39F22] rounded cursor-pointer">{{ sub.nom }}</a>
-          </li>
-        </ul>
-      </li>
+      <!-- Sous-catégories -->
+      <ul *ngIf="sousCategoriesMap[cat.id]?.length"
+          class="absolute left-0 mt-2 bg-[#424141] text-white text-xl rounded shadow z-10 opacity-0 group-hover:opacity-100 transition duration-300 p-2">
+        <li *ngFor="let sub of sousCategoriesMap[cat.id]">
+          <a [routerLink]="['/produits/souscategorie', sub.id]"
+             class="block px-3 py-1 hover:bg-[#A39F22] rounded"
+             (click)="selectSousCategorie(sub.id)">
+            {{ sub.nom }}
+          </a>
+        </li>
+      </ul>
+    </li>
 
-      <li class="relative group">
-        <a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
-          <app-icon name="contact"></app-icon> Contact
+    <li>
+      <a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+        <app-icon name="contact"></app-icon> <span>Contact</span>
+      </a>
+    </li>
+  </ul>
+
+<!-- Menu mobile -->
+<div class="lg:hidden mt-2 dropdown">
+  <button tabindex="0" class="btn btn-ghost text-white">
+    <app-icon name="burger"></app-icon>
+  </button>
+  <ul class="menu dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black text-xl">
+    <li><a routerLink="">Accueil</a></li>
+
+<li *ngFor="let cat of categories">
+  <details>
+    <summary>
+      <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+      {{ cat.nom }}
+    </summary>
+    <ul *ngIf="sousCategoriesMap[cat.id]?.length">
+      <li *ngFor="let sub of sousCategoriesMap[cat.id]">
+        <a [routerLink]="['/produits/souscategorie', sub.id]"
+           (click)="selectSousCategorie(sub.id)">
+           {{ sub.nom }}
         </a>
       </li>
     </ul>
-  </div>
+  </details>
+</li>
 
-  <!-- Mobile menu (click) -->
-  <div class="lg:hidden mt-2">
-    <div class="dropdown">
-      <label tabindex="0" class="btn btn-ghost">
-        <app-icon name="burger" class="text-white"></app-icon>
-      </label>
-      <ul class="menu menu-compact dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black text-xl">
-        <li><a routerLink="">Accueil</a></li>
-        <li *ngFor="let cat of categories">
-          <details>
-            <summary>{{ cat.nom }}</summary>
-            <ul>
-              <li *ngFor="let sub of cat.sous_categories">
-                <a (click)="selectSousCategorie(sub.id)">{{ sub.nom }}</a>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li><a routerLink="contact">Contact</a></li>
-      </ul>
-    </div>
-  </div>
+    <li><a routerLink="contact">Contact</a></li>
+  </ul>
 </div>
-
+</nav>

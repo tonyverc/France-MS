@@ -35,40 +35,29 @@ class AppFixtures extends Fixture
             'Filtrations' => ['Filtre moteur', 'Filtre transmission'],
         ];
 
-        foreach ($categoriesData as $catNom => $sousCats) {
-            $categorie = new Categorie();
-            $categorie->setNom($catNom);
-            $manager->persist($categorie);
+foreach ($categoriesData as $catNom => $sousCats) {
+    $categorie = new Categorie();
+    $categorie->setNom($catNom);
+    $manager->persist($categorie);
 
-            $sousCategoriesDuCat = [];
+    foreach ($sousCats as $scNom) {
+        $sousCat = new SousCategorie();
+        $sousCat->setNom($scNom)
+                 ->setCategorie($categorie);
+        $manager->persist($sousCat);
 
-            foreach ($sousCats as $scNom) {
-                $sousCat = new SousCategorie();
-                $sousCat->setNom($scNom)
-                    ->setCategorie($categorie);
-                $manager->persist($sousCat);
-                $sousCategoriesDuCat[] = $sousCat;
-            }
+        // Créer 1 produit minimum pour cette sous-catégorie
+        $produit = new Produit();
+        $produit->setNom($faker->word())
+                ->setDescription($faker->sentence(6))
+                ->setFicheTechnique(substr($faker->sentence(10), 0, 255))
+                ->setImage("https://picsum.photos/400/300?random=" . $faker->numberBetween(1, 1000))
+                ->addSousCategorie($sousCat); // lié uniquement à cette sous-catégorie
 
-            // Produits Faker
-            $nbProduits = $faker->numberBetween(5, 8);
-            for ($j = 0; $j < $nbProduits; $j++) {
-                $produit = new Produit();
-                $produit->setNom($faker->word())
-                    ->setDescription($faker->sentence(6))
-                    ->setFicheTechnique(substr($faker->sentence(10), 0, 255))
-                    ->setImage("https://picsum.photos/400/300?random=" . $faker->numberBetween(1, 1000));
-
-                // Lier 1 à 2 sous-catégories aléatoires de cette catégorie
-                $randomSousCats = $faker->randomElements($sousCategoriesDuCat, $faker->numberBetween(1, 2));
-                foreach ($randomSousCats as $sousCat) {
-                    $produit->addSousCategorie($sousCat);
-                }
-
-                $manager->persist($produit);
-            }
-        }
-
-        $manager->flush();
+        $manager->persist($produit);
     }
+}
+
+        $manager->flush();}
+
 }

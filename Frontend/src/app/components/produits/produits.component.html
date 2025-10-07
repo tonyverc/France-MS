@@ -34,10 +34,6 @@
   <div *ngFor="let prod of produitsPage" 
        class="bg-white rounded-2xl shadow-xl p-6 m-2 flex flex-col items-center lg:w-1/5 text-center shadow-[#424141] hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out">
 
-    <p *ngIf="prod.sousCategories?.length && prod.sousCategories[0]?.categorie">
-      Catégorie : {{ prod.sousCategories[0].categorie.nom }}
-    </p>
-
     <!-- Image si tu en as -->
     <img *ngIf="prod.image" [src]="prod.image" alt="{{ prod.nom }}" 
          class="rounded-xl w-full h-48 object-cover mb-4" />

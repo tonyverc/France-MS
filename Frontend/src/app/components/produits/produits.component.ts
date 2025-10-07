@@ -2,32 +2,24 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProduitService } from '../../services/produits.service';
-import { Produit, SousCategorie, Categorie } from '../../models/produits.model';
+import { Produit, SousCategorie } from '../../models/produits.model';
 
 @Component({
   selector: 'app-produits',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './produits.component.html',
-  styleUrls: ['./produits.component.css'],
 })
 export class ProduitsComponent implements OnInit {
-  // Produits à afficher
   produits: Produit[] = [];
   produitsPage: Produit[] = [];
-
-  // Sous-catégories
   sousCategories: SousCategorie[] = [];
-  selectedSousCategorieId!: number;
-
-  // Pagination
-  currentPage: number = 1;
-  pageSize: number = 8;
-  totalPages: number = 1;
-
-  // Catégorie
   categorieId!: number;
   categorieNom!: string;
+  sousCategorieNom! : string;
+  currentPage = 1;
+  pageSize = 8;
+  totalPages = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,86 +27,68 @@ export class ProduitsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Récupérer toutes les catégories pour trouver celle de l'URL
-    this.produitService.getCategories().subscribe({
-      next: (categories: Categorie[]) => {
-        if (categories.length === 0) {
-          console.warn('Aucune catégorie trouvée');
-          return;
-        }
+    // ✅ On écoute les changements d’ID dans l’URL
+    this.route.paramMap.subscribe(params => {
+      const idFromUrl = Number(params.get('id'));
+      const isSousCat = this.route.snapshot.url.some(seg => seg.path === 'souscategorie');
 
-        const idUrl = Number(this.route.snapshot.paramMap.get('id'));
-        const cat = categories.find(c => c.id === idUrl) || categories[0];
-
-        this.categorieId = cat.id;
-        this.categorieNom = cat.nom;
-
-        // Charger les sous-catégories et produits
-        this.loadSousCategories();
-      },
-      error: (err) => console.error('Erreur récupération catégories :', err),
+      if (isSousCat) {
+        // 🔹 Produits liés à une sous-catégorie
+        this.loadProduitsBySousCategorie(idFromUrl);
+      } else {
+        // 🔹 Produits liés à une catégorie
+        this.loadProduitsByCategorie(idFromUrl);
+      }
     });
   }
 
-  // Charger les sous-catégories de la catégorie
-  loadSousCategories() {
+  // 🔹 Chargement des produits d’une sous-catégorie
+  private loadProduitsBySousCategorie(id: number): void {
+    this.produitService.getProduitsBySousCategorie(id).subscribe({
+      next: produits => this.initProduits(produits)
+    });
+
+    // Récupère le nom de la catégorie associée à cette sous-catégorie
+    this.produitService.getSousCategorieById(id).subscribe({
+      next: sc => this.categorieNom = sc.categorie ?? 'Catégorie'
+    });
+  }
+  // 🔹 Chargement des produits d’une catégorie
+  private loadProduitsByCategorie(id: number): void {
+    this.categorieId = id;
+
+    this.produitService.getProduitsCategorie(this.categorieId).subscribe({
+      next: produits => this.initProduits(produits)
+    });
+
     this.produitService.getSousCategories(this.categorieId).subscribe({
-      next: (sousCategories: SousCategorie[]) => {
-        this.sousCategories = sousCategories;
+      next: data => this.sousCategories = data
+    });
 
-        if (sousCategories.length > 0) {
-          // Sélectionner par défaut la première sous-catégorie
-          this.selectSousCategorie(sousCategories[0].id);
-        } else {
-          // Pas de sous-catégories => aucun produit
-          this.produits = [];
-          this.produitsPage = [];
-        }
-      },
-      error: (err) => {
-        console.warn(`Pas de sous-catégories pour la catégorie ${this.categorieId}`);
-        this.produits = [];
-        this.produitsPage = [];
-      },
+    this.produitService.getCategories().subscribe({
+      next: cats => {
+        const cat = cats.find(c => c.id === this.categorieId);
+        this.categorieNom = cat ? cat.nom : 'Catégorie';
+      }
     });
   }
 
-  // Sélectionner une sous-catégorie
-  selectSousCategorie(sousCatId: number) {
-    this.selectedSousCategorieId = sousCatId;
-    console.log('Sous-catégorie sélectionnée :', sousCatId);
-    
-    this.getProduitsBySousCategorie(sousCatId);
+  // 🔹 Initialise la pagination
+  private initProduits(produits: Produit[]): void {
+    this.produits = produits;
+    this.totalPages = Math.ceil(this.produits.length / this.pageSize);
+    this.setPage(1);
   }
 
-  // Récupérer les produits d'une sous-catégorie
-getProduitsBySousCategorie(sousCatId: number) {
-  this.produitService.getProduitsBySousCategorie(sousCatId).subscribe({
-    next: (produits) => {
-      this.produits = produits;
-      this.totalPages = Math.ceil(produits.length / this.pageSize);
-      this.setPage(1);
-    },
-    error: (err) => console.error('Erreur récupération produits de la sous-catégorie :', err)
-  });
-}
-// Récupérer les produits de la catégorie 
-  loadProduitsCategorie() {
-  this.produitService.getProduitsCategorie(this.categorieId).subscribe({
-    next: (produits) => {
-      this.produits = produits;
-      this.totalPages = Math.ceil(produits.length / this.pageSize);
-      this.setPage(1);
-    },
-    error: (err) => console.error('Erreur récupération produits de la catégorie :', err)
-  });
-}
-
-
-  // Pagination
-  setPage(page: number) {
+  // 🔹 Pagination
+  setPage(page: number): void {
     this.currentPage = page;
     const start = (page - 1) * this.pageSize;
     this.produitsPage = this.produits.slice(start, start + this.pageSize);
+  }
+
+  // 🔹 Lorsqu’on sélectionne une sous-catégorie (depuis la navbar)
+  selectSousCategorie(id: number): void {
+    this.produitService.setSousCategorieActive(id);
   }
 }
