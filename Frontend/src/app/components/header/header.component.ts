@@ -37,13 +37,11 @@ export class HeaderComponent implements OnInit {
 
 
 selectCategorie(categorieId: number) {
-  console.log('Catégorie sélectionnée ID :', categorieId);
   
   this.selectedCategorieId = categorieId;
 
   const catExists = this.categories.find(cat => cat.id === categorieId);
   if (!catExists) {
-    console.error(`Catégorie avec ID ${categorieId} non trouvée.`);
     return;
   }
   
@@ -57,6 +55,5 @@ selectCategorie(categorieId: number) {
   }
 }
 selectSousCategorie(sousCategorieId: number) {
-  console.log('Sous-catégorie sélectionnée ID :', sousCategorieId);
   this.produitService.setSousCategorieActive(sousCategorieId);
 }}

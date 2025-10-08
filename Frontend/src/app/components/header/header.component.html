@@ -36,8 +36,8 @@
     <li *ngFor="let cat of categories" class="relative group">
       <button (mouseenter)="selectCategorie(cat.id)"
               class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer bg-transparent border-none">
-        <span>{{ cat.nom }}</span>
       <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+        <span>{{ cat.nom }}</span>
       </button>
 
       <!-- Sous-catégories -->

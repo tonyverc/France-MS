@@ -1,39 +1,47 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content %}
-    <div class="container mx-auto p-6">
-        <h1 class="text-4xl font-bold mb-6">Tableau de bord Administration</h1>
+	<div class="container py-4">
+		<h1 class="h3 mb-4 text-center">Tableau de bord Administration</h1>
+        <h2>Bienvenue : {{ nom }}</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Card Produits -->
-            <div class="bg-gray-100 rounded shadow p-4 flex flex-col items-center">
-                <h2 class="text-2xl font-semibold mb-2">Produits</h2>
-                <p class="text-gray-700 mb-4">Gérer tous les produits du site</p>
-                <a href="" 
-                   class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Accéder au CRUD
-                </a>
-            </div>
+		<div
+			class="row g-4">
+			<!-- Card Produits -->
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">Produits</h5>
+						<p class="card-text text-muted ">Gérer tous les produits du site</p>
+						<a href="{{ path('admin', {crudControllerFqcn: 'App\\Controller\\Admin\\ProduitCrudController'}) }}" class="btn btn-primary">
+							Accéder au CRUD
+						</a>
+					</div>
+				</div>
+			</div>
 
-            <!-- Card Catégories -->
-            <div class="bg-gray-100 rounded shadow p-4 flex flex-col items-center">
-                <h2 class="text-2xl font-semibold mb-2">Catégories</h2>
-                <p class="text-gray-700 mb-4">Gérer les catégories</p>
-                <a href="" 
-                   class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                    Accéder au CRUD
-                </a>
-            </div>
+			<!-- Card Catégories -->
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">Catégories</h5>
+						<p class="card-text text-muted">Gérer les catégories</p>
+						<a href="#" class="btn btn-success">Accéder au CRUD</a>
+					</div>
+				</div>
+			</div>
 
-            <!-- Card Sous-catégories -->
-            <div class="bg-gray-100 rounded shadow p-4 flex flex-col items-center">
-                <h2 class="text-2xl font-semibold mb-2">Sous-catégories</h2>
-                <p class="text-gray-700 mb-4">Gérer les sous-catégories</p>
-                <a href="" 
-                   class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-                    Accéder au CRUD
-                </a>
-            </div>
-        </div>
-    </div>
+			<!-- Card Sous-catégories -->
+			<div class="col-md-4">
+				<div class="card text-center shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">Sous-catégories</h5>
+						<p class="card-text text-muted">Gérer les sous-catégories</p>
+						<a href="#" class="btn btn-warning">Accéder au CRUD</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 {% endblock %}

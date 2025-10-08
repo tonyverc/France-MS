@@ -22,7 +22,7 @@ export class AdminLoginComponent implements OnInit {
     private authService: AdminAuthService
   ) {}
 
-  ngOnInit(): void{
+ ngOnInit(): void {
     this.loginForm = this.fb.group({
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -30,23 +30,22 @@ export class AdminLoginComponent implements OnInit {
     });
   }
 
-  onSubmit(){
-
-    if(this.loginForm.invalid){
+  onSubmit() {
+    if (this.loginForm.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs';
+      return;
     }
 
-    const {nom, email, password } = this.loginForm.value;
-
-    this.authService.login(nom, email, password).subscribe(
-      (response) => {
-        this.router.navigate(['/admin']);
+    const { nom, email, password } = this.loginForm.value;
+    this.authService.login(nom, email, password).subscribe({
+      next: () => {
+        this.router.navigate(['/admin']); // redirection vers dashboard
       },
-      (error) => {
-        this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect';
+      error: (err) => {
+        this.errorMessage = err.error.message || 'Nom, email ou mot de passe incorrect';
       }
-    );}
+    });
+  }
+}  
 
-  
 
-}

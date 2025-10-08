@@ -51,4 +51,5 @@ class MessageController extends AbstractController
         }
         return new JsonResponse($data);
     }
+
 }

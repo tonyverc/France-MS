@@ -74,6 +74,9 @@
         </button>
         </div>
     </form>
+    <div *ngIf="errorMessage" class="text-red-600 text-center text-xl font-bold mt-4">
+      {{ errorMessage }}
+    </div>
   </div>
     <!-- Image à droite -->
     <div class="w-auto lg:w-1/2 flex items-center justify-center">

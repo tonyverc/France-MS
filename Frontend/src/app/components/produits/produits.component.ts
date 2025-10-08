@@ -27,22 +27,22 @@ export class ProduitsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // ✅ On écoute les changements d’ID dans l’URL
+    //  On écoute les changements d’ID dans l’URL
     this.route.paramMap.subscribe(params => {
       const idFromUrl = Number(params.get('id'));
       const isSousCat = this.route.snapshot.url.some(seg => seg.path === 'souscategorie');
 
       if (isSousCat) {
-        // 🔹 Produits liés à une sous-catégorie
+        //  Produits liés à une sous-catégorie
         this.loadProduitsBySousCategorie(idFromUrl);
       } else {
-        // 🔹 Produits liés à une catégorie
+        //  Produits liés à une catégorie
         this.loadProduitsByCategorie(idFromUrl);
       }
     });
   }
 
-  // 🔹 Chargement des produits d’une sous-catégorie
+  //  Chargement des produits d’une sous-catégorie
   private loadProduitsBySousCategorie(id: number): void {
     this.produitService.getProduitsBySousCategorie(id).subscribe({
       next: produits => this.initProduits(produits)
@@ -53,7 +53,7 @@ export class ProduitsComponent implements OnInit {
       next: sc => this.categorieNom = sc.categorie ?? 'Catégorie'
     });
   }
-  // 🔹 Chargement des produits d’une catégorie
+  //  Chargement des produits d’une catégorie
   private loadProduitsByCategorie(id: number): void {
     this.categorieId = id;
 
@@ -73,27 +73,32 @@ export class ProduitsComponent implements OnInit {
     });
   }
 
-  // 🔹 Initialise la pagination
+  //  Initialise la pagination
   private initProduits(produits: Produit[]): void {
     this.produits = produits;
     this.totalPages = Math.ceil(this.produits.length / this.pageSize);
     this.setPage(1);
   }
 
-  // 🔹 Pagination
+  //  Pagination
   setPage(page: number): void {
     this.currentPage = page;
     const start = (page - 1) * this.pageSize;
     this.produitsPage = this.produits.slice(start, start + this.pageSize);
   }
 
-  // 🔹 Lorsqu’on sélectionne une sous-catégorie (depuis la navbar)
+  //  Lorsqu’on sélectionne une sous-catégorie (depuis la navbar)
   selectSousCategorie(id: number): void {
     this.produitService.setSousCategorieActive(id);
   }
 
-  // 🔹 Génère l’URL complète pour télécharger la fiche technique
-getFicheTechniqueUrl(filename: string) {
-  return `http://127.0.0.1:8000/uploads/fiches_techniques/${encodeURIComponent(filename)}`;
-}
+  // chemin pour récuperer et afficher la fiche technique
+  getFicheTechniqueUrl(fichier: string): string {
+  return `http://127.0.0.1:8000/uploads/fiches_techniques/${fichier}`;
+  }
+
+// chemin pour récuperer et afficher l'image du produit
+  getImageUrl(filename: string): string {
+    return `http://127.0.0.1:8000/uploads/images/${filename}`;
+  }
 }

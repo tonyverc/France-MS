@@ -1,16 +1,24 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
+use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/api')]
 class ProduitController extends AbstractController
 {
+    private function buildFullUrl(string $path){
+        return $this->getParameter('app.base_url') . $path;
+    }
+
     // Tous les produits d'une catégorie (toutes sous-catégories comprises)
     #[Route('/categories/{id}/produits', name: 'api_categorie_produits', methods: ['GET'])]
     public function produitsCategorie(int $id, EntityManagerInterface $em): JsonResponse
@@ -22,11 +30,10 @@ class ProduitController extends AbstractController
         foreach ($categorie->getSousCategorie() as $sousCat) {
             foreach ($sousCat->getProduits() as $produit) {
                 $produits[] = [
-                    'id' => $produit->getId(),
                     'nom' => $produit->getNom(),
-                    'description' => $produit->getDescription(),
-                    'image' => $produit->getImage(),
-                    'fiche_technique' => $produit->getFicheTechnique(),
+                    'description' => strip_tags($produit->getDescription()),
+                    'image' => $produit->getImage() ? $this->buildFullUrl('/uploads/images/' . $produit->getImage()) : null,
+                    'fiche_technique' => $produit->getFicheTechnique() ? basename($produit->getFicheTechnique()) : null,                    
                     'sousCategorie' => $sousCat->getNom()
                 ];
             }
@@ -45,10 +52,9 @@ class ProduitController extends AbstractController
         $produits = [];
         foreach ($sousCat->getProduits() as $produit) {
             $produits[] = [
-                'id' => $produit->getId(),
                 'nom' => $produit->getNom(),
                 'image' => $produit->getImage(),
-                'description' => $produit->getDescription(),
+                'description' => strip_tags($produit->getDescription()),
                 'fiche_technique' => $produit->getFicheTechnique(),
                 'sousCategorie' => $sousCat->getNom()
             ];
@@ -102,4 +108,19 @@ class ProduitController extends AbstractController
             'categorie' => $sousCat->getCategorie()->getNom()
         ]);
     }
+
+    // Téléchargement de la fiche technique d'un produit
+    #[Route('/produits/telecharger/{filename}', name: 'api_telecharger_fiche', methods: ['GET'])]
+    public function telechargerFiche(string $filename): BinaryFileResponse
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/fiches_techniques/' . $filename;
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Fiche technique introuvable.');
+        }
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
+        return $response;
+    }
+
+    
 }

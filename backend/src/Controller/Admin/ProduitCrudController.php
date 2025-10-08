@@ -9,6 +9,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 class ProduitCrudController extends AbstractCrudController
 {
@@ -21,18 +26,33 @@ class ProduitCrudController extends AbstractCrudController
     {
         return [
             TextField::new('nom', 'Nom du produit'),
-
             TextEditorField::new('description', 'Description'),
 
-            imageField::new('fiche_technique', 'Fiche technique')
-                ->setUploadDir('public/uploads/fiches_techniques')
-                ->setBasePath('/uploads/fiches_techniques')
-                ->setRequired(false),
+            TextField::new('fiche_technique', 'Fiche technique (PDF)')
+                ->setFormType(FileType::class)
+                ->setFormTypeOptions([
+                    'mapped' => false,     // le champ n'est pas directement lié à l'entité
+                    'required' => false,
+                    'data_class' => null, // Important pour les fichiers
+                    'constraints' => [
+                        new \Symfony\Component\Validator\Constraints\File([
+                            'maxSize' => '10M',
+                            'mimeTypes' => ['application/pdf'],
+                            'mimeTypesMessage' => 'Veuillez uploader un fichier PDF valide',
+                        ])
+                    ],
+                ])
+                ->onlyOnForms(),
+
 
             ImageField::new('image', 'Image')
                 ->setUploadDir('public/uploads/images')
                 ->setBasePath('/uploads/images')
-                ->setRequired(false),
+                ->setRequired(false)
+                ->setFormTypeOptions([
+                    'required' => false,
+                    
+                ]),
 
             AssociationField::new('sous_categorie', 'Sous-catégories')
                 ->setFormTypeOptions([
@@ -42,4 +62,30 @@ class ProduitCrudController extends AbstractCrudController
                 ->setCrudController(SousCategorie::class),
         ];
     }
+
+     public function persistEntity(EntityManagerInterface $em, $entityInstance): void
+    {
+        $this->handleFicheTechniqueUpload($entityInstance);
+        parent::persistEntity($em, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $em, $entityInstance): void
+    {
+        $this->handleFicheTechniqueUpload($entityInstance);
+        parent::updateEntity($em, $entityInstance);
+    }
+
+    private function handleFicheTechniqueUpload($entityInstance): void
+    {
+        /** @var UploadedFile|null $file */
+        $file = $this->getContext()->getRequest()->files->get('Produit')['fiche_technique'] ?? null;
+
+        if ($file instanceof UploadedFile) {
+            $fileName = uniqid() . '.' . $file->guessExtension();
+            $file->move('uploads/fiches_techniques', $fileName);
+            $entityInstance->setFicheTechnique('/uploads/fiches_techniques/' . $fileName);
+        }
+    }
+
+    
 }
