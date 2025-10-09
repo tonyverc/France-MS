@@ -21,6 +21,7 @@ export class ContactComponent {
       email: ['', [Validators.required, Validators.email]],
       contenu: ['', [Validators.required, Validators.minLength(10)]],
       telephone: [''], // optionnel
+      consentement: [false, Validators.requiredTrue]
     });
   }
 

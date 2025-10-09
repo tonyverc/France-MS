@@ -35,42 +35,38 @@
 </div>
 
 <!-- Section "À propos de nous" -->
-<div class="bg-[#424141] py-12 px-4 sm:px-6 lg:px-8">
-  <div
-    class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center gap-8"
-  >
+<div class="bg-[#424141] py-12 px-4 sm:px-6">
+  <div class="flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between w-full">
+
     <!-- Texte -->
-    <div class="flex flex-col text-left lg:w-1/2">
-      <h2 class="text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
-      <p class="text-xl text-white">{{ description }}</p>
+    <div class="lg:w-1/2 text-center lg:text-left p-5">
+      <h2 class="text-4xl font-extrabold text-white mb-4">
+        {{ title }}
+      </h2>
+      <p class="text-xl text-white leading-relaxed">
+        {{ description }}
+      </p>
     </div>
 
-    <!-- images de la div a propos -->
-
-    <div class="flex w-full flex-col lg:flex-row">
-      <div
-        class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center justify-around overflow-hidden"
-      >
+    <!-- Images -->
+    <div class="lg:w-1/2 flex flex-col sm:flex-row gap-6 justify-center items-center">
+      <div class="w-full sm:w-1/2 overflow-hidden rounded-2xl shadow-lg">
         <img
           [src]="img1"
-          alt="peniche sur l'eau"
-          class="w-full h-full object-cover"
+          alt="Péniche sur l'eau"
+          class="w-full h-64 sm:h-72 object-cover transform hover:scale-105 transition duration-500"
         />
       </div>
 
-      <div
-        class="divider lg:divider-horizontal before:bg-white after:bg-white"
-      ></div>
-
-      <div
-        class="card bg-base-300 rounded-box grid h-auto w-auto grow place-items-center overflow-hidden"
-      >
+      <div class="w-full sm:w-1/2 overflow-hidden rounded-2xl shadow-lg">
         <img
           [src]="img2"
-          alt="peniche de lyon sur l'eau"
-          class="w-full h-full object-cover"
+          alt="Péniche de Lyon sur l'eau"
+          class="w-full h-64 sm:h-72 object-cover transform hover:scale-105 transition duration-500"
         />
       </div>
     </div>
+
   </div>
 </div>
+

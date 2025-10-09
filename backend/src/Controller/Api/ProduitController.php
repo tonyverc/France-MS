@@ -72,7 +72,7 @@ class ProduitController extends AbstractController
         foreach ($categories as $cat) {
             $data[] = [
                 'id' => $cat->getId(),
-                'nom' => $cat->getNom()
+                'nom' => $cat->getNom(),
             ];
         }
         return $this->json($data);

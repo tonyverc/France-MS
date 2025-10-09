@@ -16,7 +16,7 @@ export class ProduitsComponent implements OnInit {
   sousCategories: SousCategorie[] = [];
   categorieId!: number;
   categorieNom!: string;
-  sousCategorieNom! : string;
+  sousCategorieNom!: string;
   currentPage = 1;
   pageSize = 8;
   totalPages = 1;
@@ -27,44 +27,49 @@ export class ProduitsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //  On écoute les changements d’ID dans l’URL
+    // Écoute des changements d'URL
     this.route.paramMap.subscribe(params => {
       const idFromUrl = Number(params.get('id'));
       const isSousCat = this.route.snapshot.url.some(seg => seg.path === 'souscategorie');
 
       if (isSousCat) {
-        //  Produits liés à une sous-catégorie
         this.loadProduitsBySousCategorie(idFromUrl);
       } else {
-        //  Produits liés à une catégorie
         this.loadProduitsByCategorie(idFromUrl);
       }
     });
   }
 
-  //  Chargement des produits d’une sous-catégorie
-  private loadProduitsBySousCategorie(id: number): void {
-    this.produitService.getProduitsBySousCategorie(id).subscribe({
+  // Produits par sous-catégorie
+  private loadProduitsBySousCategorie(sousCatId: number): void {
+    this.produitService.getProduitsBySousCategorie(sousCatId).subscribe({
       next: produits => this.initProduits(produits)
     });
 
-    // Récupère le nom de la catégorie associée à cette sous-catégorie
-    this.produitService.getSousCategorieById(id).subscribe({
-      next: sc => this.categorieNom = sc.categorie ?? 'Catégorie'
+    // Récupère le nom de la sous-catégorie et sa catégorie parente
+    this.produitService.getSousCategorieById(sousCatId).subscribe({
+      next: sc => {
+        this.sousCategorieNom = sc.nom ?? 'Sous-catégorie';
+        this.categorieNom = sc.categorie ?? 'Catégorie';
+      }
     });
   }
-  //  Chargement des produits d’une catégorie
-  private loadProduitsByCategorie(id: number): void {
-    this.categorieId = id;
 
+  // Produits par catégorie
+  private loadProduitsByCategorie(categorieId: number): void {
+    this.categorieId = categorieId;
+
+    // Produits
     this.produitService.getProduitsCategorie(this.categorieId).subscribe({
       next: produits => this.initProduits(produits)
     });
 
+    // Sous-catégories pour filtre/menu
     this.produitService.getSousCategories(this.categorieId).subscribe({
       next: data => this.sousCategories = data
     });
 
+    // Nom de la catégorie
     this.produitService.getCategories().subscribe({
       next: cats => {
         const cat = cats.find(c => c.id === this.categorieId);
@@ -73,31 +78,41 @@ export class ProduitsComponent implements OnInit {
     });
   }
 
-  //  Initialise la pagination
+  // Pagination
   private initProduits(produits: Produit[]): void {
-    this.produits = produits;
+    // Préfixe les URLs des images et fiches techniques
+this.produits = produits.map(p => ({
+    ...p,
+    image: p.image 
+      ? (p.image.startsWith('http') ? p.image : `http://127.0.0.1:8000/uploads/images/${p.image}`)
+      : '',
+    fiche_technique: p.fiche_technique 
+      ? (p.fiche_technique.startsWith('http') 
+          ? p.fiche_technique 
+          : `http://127.0.0.1:8000/api/produits/telecharger/${p.fiche_technique}`)
+      : ''
+  }));
     this.totalPages = Math.ceil(this.produits.length / this.pageSize);
     this.setPage(1);
   }
 
-  //  Pagination
   setPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     const start = (page - 1) * this.pageSize;
     this.produitsPage = this.produits.slice(start, start + this.pageSize);
   }
 
-  //  Lorsqu’on sélectionne une sous-catégorie (depuis la navbar)
+  // Sélection depuis navbar
   selectSousCategorie(id: number): void {
     this.produitService.setSousCategorieActive(id);
   }
 
-  // chemin pour récuperer et afficher la fiche technique
+  // Helpers pour template
   getFicheTechniqueUrl(fichier: string): string {
-  return `http://127.0.0.1:8000/uploads/fiches_techniques/${fichier}`;
+    return `http://127.0.0.1:8000/uploads/fiches_techniques/${fichier}`;
   }
 
-// chemin pour récuperer et afficher l'image du produit
   getImageUrl(filename: string): string {
     return `http://127.0.0.1:8000/uploads/images/${filename}`;
   }

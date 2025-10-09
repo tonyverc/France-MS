@@ -14,7 +14,7 @@ import { NgIf } from '@angular/common';
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 2.25c0 0-7.5 8.25-7.5 12a7.5 7.5 0 0015 0c0-3.75-7.5-12-7.5-12z"/>
     </svg>
 
-    <svg *ngIf="name==='engrenage'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:text-white sm:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg *ngIf="name==='engrenage'" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:text-white " fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8 4c0-.35-.03-.69-.08-1.02l2.11-1.65-2-3.46-2.49 1c-.52-.4-1.08-.73-1.67-1l-.37-2.65h-4l-.37 2.65c-.59.27-1.15.6-1.67 1l-2.49-1-2 3.46 2.11 1.65c-.05.33-.08.67-.08 1.02s.03.69.08 1.02L2.69 14.67l2 3.46 2.49-1c.52.4 1.08.73 1.67 1l.37 2.65h4l.37-2.65c.59-.27 1.15-.6 1.67-1l2.49 1 2-3.46-2.11-1.65c.05-.33.08-.67.08-1.02z"/>
     </svg>

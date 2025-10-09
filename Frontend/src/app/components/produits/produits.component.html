@@ -1,7 +1,4 @@
-<h2 class="text-3xl font-bold mt-6 text-center">Produits de la catégorie
-	{{ categorieNom}}
-</h2>
-
+<h2 class="text-3xl font-bold mt-6 text-center">Produits de la catégorie {{ categorieNom }} - {{ sousCategorieNom }}</h2>
 
 <!-- mise en place file d'ariane -->
 
@@ -34,21 +31,21 @@
 
 <div *ngIf="produits.length > 0; else aucunProduit" class="flex flex-col-2 lg:flex-row flex-wrap justify-center gap-6">
 	<div
-		*ngFor="let prod of produitsPage" class="bg-white rounded-2xl shadow-xl p-6 m-2 flex flex-col items-center lg:w-1/5 text-center shadow-[#424141] hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out overflow-hidden">
+		*ngFor="let produit of produitsPage" class="bg-white rounded-2xl shadow-xl p-6 m-2 flex flex-col items-center lg:w-1/5 text-center shadow-[#424141] hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out overflow-hidden">
 
 		<!-- Image si tu en as -->
 		<img
-		*ngIf="prod.image" [src]="getImageUrl(prod.image)" alt="{{ prod.nom }}" class="rounded-xl min-h-[300px] object-cover mb-4"/>
+		*ngIf="produit.image" [src]="produit.image" alt="{{ produit.nom }}" class="rounded-xl min-h-[300px] object-cover mb-4"/>
 
 		<!-- Nom du produit -->
-		<h3 class="text-3xl font-semibold mb-2">{{ prod.nom }}</h3>
+		<h3 class="text-3xl font-semibold mb-2">{{ produit.nom }}</h3>
 
 		<!-- Description -->
-		<p class="text-xl mb-4 line-clamp-8 ">{{ prod.description }}</p>
+		<p class="text-xl mb-4 line-clamp-8 ">{{ produit.description }}</p>
 
 		<!-- Bouton vers détails et tetecharger la fiche technique -->
-    <a *ngIf="prod.fiche_technique"
-      [href]="getFicheTechniqueUrl(prod.fiche_technique)" download
+    <a *ngIf="produit.fiche_technique"
+      [href]="produit.fiche_technique" download
       class="btn bg-[#A39F22] text-white mt-4 px-4 py-2 rounded-xl ml-2">
       Télécharger la fiche technique
     </a>

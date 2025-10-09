@@ -1,91 +1,120 @@
 <!-- Navbar principale -->
-<nav class="bg-[#424141] shadow-sm p-2 sticky top-0 left-0 w-full z-50 ">
+<nav
+	class="bg-[#424141] shadow-sm p-2 sticky top-0 left-0 w-full z-50 ">
 
-  <!-- En-tête : logo / recherche / connexion -->
-  <div class="flex sm:flex-col lg:flex-row justify-between items-center gap-2 mb-2">
-    
-    <!-- Bouton admin -->
-    <a routerLink="login"
-       class="order-2 sm:order-3 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
-      <app-icon name="user"></app-icon>
-      <span class="ml-2 text-lg">Connexion Administration</span>
-    </a>
+	<!-- En-tête : logo / recherche / connexion -->
+	<div
+		class="flex flex-col sm:flex-col lg:flex-row justify-between items-center gap-2 mb-2">
 
-    <!-- Logo -->
-    <img src="assets/images/Logo-France-Marine-Services.png"
-         alt="Logo"
-         class="order-1 max-w-32 sm:max-w-48 w-auto" />
+		<!-- Bouton admin -->
+		<a routerlink="login" class="order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
+			<app-icon name="user"></app-icon>
+			<span class="ml-2 text-lg">Connexion Administration</span>
+		</a>
 
-    <!-- Barre de recherche -->
-    <label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto self-center">
-      <app-icon name="search"></app-icon>
-      <input type="search" placeholder="Rechercher"
-             class="rounded w-full text-xl text-black px-2 py-1 outline-none" />
-    </label>
-  </div>
+		<!-- Logo -->
+		<img
+		src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
 
-  <!-- Menu desktop -->
-  <ul class="hidden lg:flex justify-center space-x-12">
-    <li>
-      <a routerLink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
-        <app-icon name="home"></app-icon> <span>Accueil</span>
-      </a>
-    </li>
+		<!-- Barre de recherche -->
+		<label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto self-center">
+			<app-icon name="search"></app-icon>
+			<input type="search" placeholder="Rechercher" class="rounded w-full text-xl text-black px-2 py-1 outline-none"/>
+		</label>
+	</div>
 
-    <!-- Catégories -->
-    <li *ngFor="let cat of categories" class="relative group">
-      <button (mouseenter)="selectCategorie(cat.id)"
-              class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer bg-transparent border-none">
-      <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
-        <span>{{ cat.nom }}</span>
-      </button>
+	<!-- Menu desktop -->
+	<ul class="hidden lg:flex justify-center space-x-12">
+		<li>
+			<a routerlink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+				<app-icon name="home"></app-icon>
+				<span>Accueil</span>
+			</a>
+		</li>
 
-      <!-- Sous-catégories -->
-      <ul *ngIf="sousCategoriesMap[cat.id]?.length"
-          class="absolute left-0 mt-2 bg-[#424141] text-white text-xl rounded shadow z-10 opacity-0 group-hover:opacity-100 transition duration-300 p-2">
-        <li *ngFor="let sub of sousCategoriesMap[cat.id]">
-          <a [routerLink]="['/produits/souscategorie', sub.id]"
-             class="block px-3 py-1 hover:bg-[#A39F22] rounded"
-             (click)="selectSousCategorie(sub.id)">
-            {{ sub.nom }}
-          </a>
-        </li>
-      </ul>
-    </li>
+		<!-- Catégories -->
+		<li *ngFor="let cat of categories" class="relative group">
+			<button (mouseenter)="selectCategorie(cat.id)" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer bg-transparent border-none">
+				<app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+				<span>{{ cat.nom }}</span>
+			</button>
 
-    <li>
-      <a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
-        <app-icon name="contact"></app-icon> <span>Contact</span>
-      </a>
-    </li>
-  </ul>
+			<!-- Sous-catégories -->
+			<ul *ngIf="sousCategoriesMap[cat.id]?.length" class="absolute left-0 mt-2 bg-[#424141] text-white text-xl rounded shadow z-10 opacity-0 group-hover:opacity-100 transition duration-300 p-2">
+				<li *ngFor="let sub of sousCategoriesMap[cat.id]">
+					<a [routerLink]="['/produits/souscategorie', sub.id]" class="block px-3 py-1 hover:bg-[#A39F22] rounded" (click)="selectSousCategorie(sub.id)">
+						{{ sub.nom }}
+					</a>
+				</li>
+			</ul>
+		</li>
+
+		<li>
+			<a routerlink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+				<app-icon name="contact"></app-icon>
+				<span>Contact</span>
+			</a>
+		</li>
+	</ul>
 
 <!-- Menu mobile -->
-<div class="lg:hidden mt-2 dropdown">
-  <button tabindex="0" class="btn btn-ghost text-white">
+<div class="lg:hidden mt-2 px-4">
+  <!-- Bouton burger -->
+  <button
+    (click)="toggleMenu()"
+    class="text-white flex items-center space-x-2 text-2xl focus:outline-none"
+  >
     <app-icon name="burger"></app-icon>
   </button>
-  <ul class="menu dropdown-content bg-base-100 rounded-box mt-2 p-2 shadow w-52 text-black text-xl">
-    <li><a routerLink="">Accueil</a></li>
 
-<li *ngFor="let cat of categories">
-  <details>
-    <summary>
-      <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
-      {{ cat.nom }}
-    </summary>
-    <ul *ngIf="sousCategoriesMap[cat.id]?.length">
-      <li *ngFor="let sub of sousCategoriesMap[cat.id]">
-        <a [routerLink]="['/produits/souscategorie', sub.id]"
-           (click)="selectSousCategorie(sub.id)">
-           {{ sub.nom }}
-        </a>
-      </li>
-    </ul>
-  </details>
-</li>
+  <!-- Menu déroulant -->
+  <div [ngClass]= "{'max-h-0 overflow-hidden': !isMenuOpen, 'max-h-screen': isMenuOpen}" class="transition-all duration-300 ease-in-out mt-2">
+    <!-- Accueil -->
+    <a
+      routerLink=""
+      class=" text-white text-2xl font-bold mb-2 hover:text-yellow-400 flex items-center"
+      (click)="closeMenu()"
+    >
+      <app-icon name="home"></app-icon>
+      <span class="ml-2">Accueil</span>
+    </a>
 
-    <li><a routerLink="contact">Contact</a></li>
-  </ul>
+    <!-- Catégories -->
+    <ng-container *ngFor="let cat of categories">
+      <details class="mb-2">
+        <summary
+          class="flex items-center text-white text-2xl font-bold cursor-pointer"
+        >
+          <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+          <span class="ml-2">{{ cat.nom }}</span>
+        </summary>
+
+        <ul
+          *ngIf="sousCategoriesMap[cat.id]?.length"
+          class="pl-8 mt-1 space-y-1"
+        >
+          <li *ngFor="let sub of sousCategoriesMap[cat.id]">
+            <a
+              [routerLink]="['/produits/souscategorie', sub.id]"
+              class="block text-gray-200 text-lg hover:text-yellow-400"
+              (click)="selectSousCategorie(sub.id); closeMenu()"
+            >
+              {{ sub.nom }}
+            </a>
+          </li>
+        </ul>
+      </details>
+    </ng-container>
+
+    <!-- Contact -->
+    <a
+      routerLink="contact"
+      class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center"
+      (click)="closeMenu()"
+    >
+      <app-icon name="contact"></app-icon>
+      <span class="ml-2">Contact</span>
+    </a>
+  </div>
 </div>
 </nav>

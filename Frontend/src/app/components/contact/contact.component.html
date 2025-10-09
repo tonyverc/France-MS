@@ -83,6 +83,18 @@
         <input type="tel" formControlName="telephone" class="w-full p-2 border rounded-2xl" />
       </div>
 
+      <!-- Consentement pour le stockage du téléphone -->
+      <div class="flex items-center mt-2">
+        <input type="checkbox" formControlName="consentement" id="consentement" class="mr-2" />
+        <label for="consentement" class="text-lg">
+          J’accepte que mon numéro de téléphone soit utilisé uniquement pour me recontacter. 
+          Vos informations resteront confidentielles.
+        </label>
+      </div>
+      <p *ngIf="contactForm.get('consentement')?.touched && contactForm.get('consentement')?.invalid" class="text-red-600 text-sm">
+        Vous devez accepter pour envoyer le formulaire
+      </p>
+
       <!-- Bouton -->
         <div class="flex justify-center">
         <button 

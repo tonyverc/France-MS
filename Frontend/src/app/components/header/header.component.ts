@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ProduitService, Categorie } from '../../services/produits.service';
 import { SousCategorie } from '../../models/produits.model';
 import { IconComponent } from '../icon/icon.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -19,11 +20,39 @@ export class HeaderComponent implements OnInit {
 
   constructor(private produitService: ProduitService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.produitService.getCategories().subscribe({
-      next: (data) => (this.categories = data),
-    });
-  }
+ngOnInit(): void {
+  this.produitService.getCategories().subscribe({
+    next: (categories) => {
+      this.categories = categories;
+
+      // On prépare les requêtes pour chaque catégorie
+      const sousCatRequests = categories.map(cat =>
+        this.produitService.getSousCategories(cat.id)
+      );
+
+      // On exécute toutes les requêtes en parallèle
+      forkJoin(sousCatRequests).subscribe({
+        next: (allSousCats) => {
+          allSousCats.forEach((sousCats, index) => {
+            const catId = categories[index].id;
+            this.sousCategoriesMap[catId] = sousCats;
+          });
+        },
+        error: (err) => console.error('Erreur sous-catégories', err)
+      });
+    },
+    error: (err) => console.error('Erreur catégories', err)
+  });
+}
+
+    // gestion du menu burger pour le mobile
+    isMenuOpen = false;
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    }
+    closeMenu() {
+      this.isMenuOpen = false;
+    }
 
     // Associer une icône à chaque catégorie basée sur son nom
     getIconForCategory(nom: string): string {

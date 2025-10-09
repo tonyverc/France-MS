@@ -46,4 +46,5 @@ ngOnInit() {
     this.produitsService.setCategorieActive(categorieId);
     this.router.navigate(['/produits', categorieId]);
   }
+
 }
