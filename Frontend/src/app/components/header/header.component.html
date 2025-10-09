@@ -7,9 +7,13 @@
 		class="flex flex-col sm:flex-col lg:flex-row justify-between items-center gap-2 mb-2">
 
 		<!-- Bouton admin -->
-		<a routerlink="login" class="order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
+		<a routerLink="login" class="order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
 			<app-icon name="user"></app-icon>
-			<span class="ml-2 text-lg">Connexion Administration</span>
+      <div *ngIf="!user">
+			  <span class="ml-2 text-lg">Connexion Administration</span>
+      </div>
+      <div *ngIf="user">
+        <span class="ml-2 text-lg" *ngIf="user">Bonjour {{ user.nom }}</span></div>
 		</a>
 
 		<!-- Logo -->
@@ -26,7 +30,7 @@
 	<!-- Menu desktop -->
 	<ul class="hidden lg:flex justify-center space-x-12">
 		<li>
-			<a routerlink="" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+			<a routerLink='' class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
 				<app-icon name="home"></app-icon>
 				<span>Accueil</span>
 			</a>
@@ -50,7 +54,7 @@
 		</li>
 
 		<li>
-			<a routerlink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2">
+			<a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
 				<app-icon name="contact"></app-icon>
 				<span>Contact</span>
 			</a>
@@ -76,7 +80,7 @@
       (click)="closeMenu()"
     >
       <app-icon name="home"></app-icon>
-      <span class="ml-2">Accueil</span>
+      <span class="ml-2 cursor-pointer">Accueil</span>
     </a>
 
     <!-- Catégories -->
@@ -109,7 +113,7 @@
     <!-- Contact -->
     <a
       routerLink="contact"
-      class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center"
+      class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center cursor-pointer"
       (click)="closeMenu()"
     >
       <app-icon name="contact"></app-icon>

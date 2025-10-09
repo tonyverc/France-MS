@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ProduitService, Categorie } from '../../services/produits.service';
 import { SousCategorie } from '../../models/produits.model';
 import { IconComponent } from '../icon/icon.component';
 import { forkJoin } from 'rxjs';
+import { AdminAuthService } from '../../services/admin-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -17,10 +18,12 @@ export class HeaderComponent implements OnInit {
   sousCategories: SousCategorie[] = [];
   selectedCategorieId: number | null = null;
   sousCategoriesMap: { [categorieId: number]: SousCategorie[] } = {};
+  user: any = null;
 
-  constructor(private produitService: ProduitService, private router: Router) {}
+  constructor(private produitService: ProduitService, private router: Router, private authService: AdminAuthService) {}
 
 ngOnInit(): void {
+  // Récupération des catégories et sous-catégories
   this.produitService.getCategories().subscribe({
     next: (categories) => {
       this.categories = categories;
@@ -43,7 +46,17 @@ ngOnInit(): void {
     },
     error: (err) => console.error('Erreur catégories', err)
   });
+
+  // Récupération de l'utilisateur connecté
+  this.authService.currentAdmin$.subscribe((user: any) =>{
+    this.user = user;
+  });
 }
+
+    // Deconnexion de l'admin
+    logout(): void {
+      this.authService.logout();
+    }
 
     // gestion du menu burger pour le mobile
     isMenuOpen = false;
@@ -86,3 +99,4 @@ selectCategorie(categorieId: number) {
 selectSousCategorie(sousCategorieId: number) {
   this.produitService.setSousCategorieActive(sousCategorieId);
 }}
+

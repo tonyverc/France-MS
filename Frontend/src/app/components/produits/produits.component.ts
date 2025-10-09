@@ -78,20 +78,20 @@ export class ProduitsComponent implements OnInit {
     });
   }
 
-  // Pagination
+  // Pagination + recuperation image et fiche technique du produit
   private initProduits(produits: Produit[]): void {
     // Préfixe les URLs des images et fiches techniques
-this.produits = produits.map(p => ({
-    ...p,
-    image: p.image 
-      ? (p.image.startsWith('http') ? p.image : `http://127.0.0.1:8000/uploads/images/${p.image}`)
-      : '',
-    fiche_technique: p.fiche_technique 
-      ? (p.fiche_technique.startsWith('http') 
-          ? p.fiche_technique 
-          : `http://127.0.0.1:8000/api/produits/telecharger/${p.fiche_technique}`)
-      : ''
-  }));
+  this.produits = produits.map(p => ({
+      ...p,
+      image: p.image 
+        ? (p.image.startsWith('http') ? p.image : `http://127.0.0.1:8000/uploads/images/${p.image}`)
+        : '',
+      fiche_technique: p.fiche_technique 
+        ? (p.fiche_technique.startsWith('http') 
+            ? p.fiche_technique 
+            : `http://127.0.0.1:8000/uploads/fiches_techniques/${p.fiche_technique}`)
+        : ''
+    }));
     this.totalPages = Math.ceil(this.produits.length / this.pageSize);
     this.setPage(1);
   }
@@ -108,12 +108,4 @@ this.produits = produits.map(p => ({
     this.produitService.setSousCategorieActive(id);
   }
 
-  // Helpers pour template
-  getFicheTechniqueUrl(fichier: string): string {
-    return `http://127.0.0.1:8000/uploads/fiches_techniques/${fichier}`;
-  }
-
-  getImageUrl(filename: string): string {
-    return `http://127.0.0.1:8000/uploads/images/${filename}`;
-  }
 }

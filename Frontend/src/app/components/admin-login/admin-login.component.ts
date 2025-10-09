@@ -35,14 +35,17 @@ export class AdminLoginComponent implements OnInit {
       this.errorMessage = 'Veuillez remplir tous les champs';
       return;
     }
+  }
 
-    const { nom, email, password } = this.loginForm.value;
-    this.authService.login(nom, email, password).subscribe({
+  // récupérer l'admin connecté
+  login(){
+    const nom = this.loginForm.value.nom;
+    this.authService.login(nom).subscribe({
       next: () => {
-        this.router.navigate(['/admin']); // redirection vers dashboard
+        this.router.navigate(['/admin']);
       },
       error: (err) => {
-        this.errorMessage = err.error.message || 'Nom, email ou mot de passe incorrect';
+        this.errorMessage = err.error?.message || 'Nom, email ou mot de passe incorrect';
       }
     });
   }

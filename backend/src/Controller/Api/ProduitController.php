@@ -53,9 +53,9 @@ class ProduitController extends AbstractController
         foreach ($sousCat->getProduits() as $produit) {
             $produits[] = [
                 'nom' => $produit->getNom(),
-                'image' => $produit->getImage(),
+                'image' => $produit->getImage() ? $this->buildFullUrl('/uploads/images/' . $produit->getImage()) : null,
                 'description' => strip_tags($produit->getDescription()),
-                'fiche_technique' => $produit->getFicheTechnique(),
+                'fiche_technique' => $produit->getFicheTechnique() ? basename($produit->getFicheTechnique()) : null,
                 'sousCategorie' => $sousCat->getNom()
             ];
         }
@@ -110,7 +110,6 @@ class ProduitController extends AbstractController
     }
 
     // Téléchargement de la fiche technique d'un produit
-    #[Route('/produits/telecharger/{filename}', name: 'api_telecharger_fiche', methods: ['GET'])]
     public function telechargerFiche(string $filename): BinaryFileResponse
     {
         $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/fiches_techniques/' . $filename;
