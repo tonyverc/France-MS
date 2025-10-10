@@ -6,16 +6,21 @@
 	<div
 		class="flex flex-col sm:flex-col lg:flex-row justify-between items-center gap-2 mb-2">
 
-		<!-- Bouton admin -->
-		<a routerLink="login" class="order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
+		<!-- Si l'utilisateur N'EST PAS connecté -->
+		<a *ngIf="!user" routerLink="login" class="order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
 			<app-icon name="user"></app-icon>
-      <div *ngIf="!user">
-			  <span class="ml-2 text-lg">Connexion Administration</span>
-      </div>
-      <div *ngIf="user">
-        <span class="ml-2 text-lg" *ngIf="user">Bonjour {{ user.nom }}</span></div>
+			<span class="ml-2 text-lg">Connexion Administration</span>
 		</a>
 
+		<!-- Si l'utilisateur EST connecté -->
+		<div *ngIf="user" class=" mt-3 order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
+			<app-icon name="user"></app-icon>
+			<span class="ml-2 text-lg">Bonjour
+				{{ user.nom }}</span>
+			<button (click)="logout()" class="ml-3 bg-[#fff] text-[#A39F22] p-4  py-1 rounded-lg hover:bg-[#f2f2f2]  text-xl font-bold cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 ease-in-out ">
+				Déconnexion
+			</button>
+		</div>
 		<!-- Logo -->
 		<img
 		src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
@@ -52,73 +57,69 @@
 				</li>
 			</ul>
 		</li>
-
 		<li>
 			<a routerLink="contact" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
 				<app-icon name="contact"></app-icon>
 				<span>Contact</span>
 			</a>
 		</li>
+    <!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
+		<li *ngIf="user">
+			<a (click)="redirectToEasy()" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
+      	<app-icon name="user"></app-icon>
+				<span>Administration</span>
+			</a>
+		</li>
+
 	</ul>
 
-<!-- Menu mobile -->
-<div class="lg:hidden mt-2 px-4">
-  <!-- Bouton burger -->
-  <button
-    (click)="toggleMenu()"
-    class="text-white flex items-center space-x-2 text-2xl focus:outline-none"
-  >
-    <app-icon name="burger"></app-icon>
-  </button>
+	<!-- Menu mobile -->
+	<div
+		class="lg:hidden mt-2 px-4">
+		<!-- Bouton burger -->
+		<button (click)="toggleMenu()" class="text-white flex items-center space-x-2 text-2xl focus:outline-none">
+			<app-icon name="burger"></app-icon>
+		</button>
 
-  <!-- Menu déroulant -->
-  <div [ngClass]= "{'max-h-0 overflow-hidden': !isMenuOpen, 'max-h-screen': isMenuOpen}" class="transition-all duration-300 ease-in-out mt-2">
-    <!-- Accueil -->
-    <a
-      routerLink=""
-      class=" text-white text-2xl font-bold mb-2 hover:text-yellow-400 flex items-center"
-      (click)="closeMenu()"
-    >
-      <app-icon name="home"></app-icon>
-      <span class="ml-2 cursor-pointer">Accueil</span>
-    </a>
+		<!-- Menu déroulant -->
+		<div
+			[ngClass]="{'max-h-0 overflow-hidden': !isMenuOpen, 'max-h-screen': isMenuOpen}" class="transition-all duration-300 ease-in-out mt-2">
+			<!-- Accueil -->
+			<a routerlink="" class=" text-white text-2xl font-bold mb-2 hover:text-yellow-400 flex items-center" (click)="closeMenu()">
+				<app-icon name="home"></app-icon>
+				<span class="ml-2 cursor-pointer">Accueil</span>
+			</a>
 
-    <!-- Catégories -->
-    <ng-container *ngFor="let cat of categories">
-      <details class="mb-2">
-        <summary
-          class="flex items-center text-white text-2xl font-bold cursor-pointer"
-        >
-          <app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
-          <span class="ml-2">{{ cat.nom }}</span>
-        </summary>
+			<!-- Catégories -->
+			<ng-container *ngFor="let cat of categories">
+				<details class="mb-2">
+					<summary class="flex items-center text-white text-2xl font-bold cursor-pointer">
+						<app-icon [name]="getIconForCategory(cat.nom)"></app-icon>
+						<span class="ml-2">{{ cat.nom }}</span>
+					</summary>
 
-        <ul
-          *ngIf="sousCategoriesMap[cat.id]?.length"
-          class="pl-8 mt-1 space-y-1"
-        >
-          <li *ngFor="let sub of sousCategoriesMap[cat.id]">
-            <a
-              [routerLink]="['/produits/souscategorie', sub.id]"
-              class="block text-gray-200 text-lg hover:text-yellow-400"
-              (click)="selectSousCategorie(sub.id); closeMenu()"
-            >
-              {{ sub.nom }}
-            </a>
-          </li>
-        </ul>
-      </details>
-    </ng-container>
+					<ul *ngIf="sousCategoriesMap[cat.id]?.length" class="pl-8 mt-1 space-y-1">
+						<li *ngFor="let sub of sousCategoriesMap[cat.id]">
+							<a [routerLink]="['/produits/souscategorie', sub.id]" class="block text-gray-200 text-lg hover:text-yellow-400" (click)="selectSousCategorie(sub.id); closeMenu()">
+								{{ sub.nom }}
+							</a>
+						</li>
+					</ul>
+				</details>
+			</ng-container>
 
-    <!-- Contact -->
-    <a
-      routerLink="contact"
-      class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center cursor-pointer"
-      (click)="closeMenu()"
-    >
-      <app-icon name="contact"></app-icon>
-      <span class="ml-2">Contact</span>
-    </a>
-  </div>
-</div>
+			<!-- Contact -->
+			<a routerlink="contact" class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center cursor-pointer" (click)="closeMenu()">
+				<app-icon name="contact"></app-icon>
+				<span class="ml-2">Contact</span>
+			</a>
+          <!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
+		<li *ngIf="user">
+			<a (click)="redirectToEasy()" class="text-white font-bold text-2xl mt-2 hover:text-yellow-400 flex items-center cursor-pointer">
+				<span>Administration</span>
+			</a>
+		</li>
+
+		</div>
+	</div>
 </nav>

@@ -20,6 +20,9 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $admin = $this->getUser(); // Récupère l'utilisateur actuellement connecté
+        // if (!$admin) {
+        //     throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+        // }
 
         $nom = $admin ? $admin->getNom() : 'Admin'; // Récupère le nom de l'utilisateur ou utilise 'Admin' par défaut
         $email = $admin ? $admin->getEmail() : 'Admin'; // Récupère l'email de l'utilisateur ou utilise 'Admin' par défaut
@@ -35,7 +38,8 @@ class DashboardController extends AbstractDashboardController
         return Dashboard::new()
             ->setFaviconPath('admin, fa-thin fa-user')
             ->setTitle('Espace Administration France Marine Services')
-            ->renderContentMaximized();
+            ->renderContentMaximized()
+            ->setTranslationDomain('admin');
     }
 
     public function configureMenuItems(): iterable
@@ -45,6 +49,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégories', 'fa-solid fa-table-list', Categorie::class);
         yield MenuItem::linkToCrud('Sous-catégories', 'fas fa-list', SousCategorie::class);
         yield MenuItem::linkToCrud('message', 'fa-regular fa-envelope', Message::class);
+        yield MenuItem::linkToUrl('Retour au site', 'fa fa-undo', 'http://localhost:4200/');
 
         // yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out-alt');
     }

@@ -27,9 +27,11 @@ export class AdminAuthService {
     }
   }
 
-  login(nom: string): Observable<Admin> {
-    return this.http.post<Admin>(this.apiUrl, { nom }).pipe(
+  login(nom: string, email: string, password: string): Observable<Admin> {
+    return this.http.post<Admin>(this.apiUrl, { nom, email, password }).pipe(
       tap((admin) => {
+
+        
         // Stocke l'admin connecté localement
         localStorage.setItem('admin', JSON.stringify(admin));
         this.currentAdminSubject.next(admin);

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AdminAuthService } from '../../services/admin-auth.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-login',
@@ -30,25 +31,27 @@ export class AdminLoginComponent implements OnInit {
     });
   }
 
+  // Gestion de la soumission du formulaire erreur ou redirection vers le login
   onSubmit() {
     if (this.loginForm.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs';
       return;
     }
+    this.login();
   }
 
   // récupérer l'admin connecté
   login(){
-    const nom = this.loginForm.value.nom;
-    this.authService.login(nom).subscribe({
+    const { nom, email, password} = this.loginForm.value;
+    this.authService.login(nom, email, password).subscribe({
       next: () => {
-        this.router.navigate(['/admin']);
+        window.location.href = 'http://localhost:8000/admin/';
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Nom, email ou mot de passe incorrect';
       }
     });
   }
-}  
 
+}
 
