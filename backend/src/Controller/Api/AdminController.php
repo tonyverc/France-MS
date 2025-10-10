@@ -3,17 +3,17 @@
 namespace App\Controller\Api;
 
 use App\Repository\AdminRepository;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
-#[Route('/api/admin', name: 'app_api_admin', methods: ['POST'])]
-public function login(AdminRepository $adminRepo, Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
+#[Route('/api/admin/login', name: 'app_api_admin', methods: ['POST'])]
+public function login(AdminRepository $adminRepo, Request $request, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager): JsonResponse
  {
         try {
             $data = json_decode($request->getContent(), true);
@@ -30,10 +30,12 @@ public function login(AdminRepository $adminRepo, Request $request, UserPassword
             if (!$admin || !$passwordHasher->isPasswordValid($admin, $password)) {
                 return new JsonResponse(['message' => 'Nom, email ou mot de passe incorrect'], 401);
             }
+            $token = $jwtManager->create($admin);
 
             return new JsonResponse([
                 'nom' => $admin->getNom(),
-                'email' => $admin->getEmail()
+                'email' => $admin->getEmail(),
+                'token' => $token
             ], 200);
 
         } catch (\Throwable $e) {

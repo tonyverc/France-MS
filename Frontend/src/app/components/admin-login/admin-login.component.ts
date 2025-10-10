@@ -42,9 +42,10 @@ export class AdminLoginComponent implements OnInit {
 
   // récupérer l'admin connecté
   login(){
-    const { nom, email, password} = this.loginForm.value;
-    this.authService.login(nom, email, password).subscribe({
-      next: () => {
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email, password).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', res.token)
         window.location.href = 'http://localhost:8000/admin/';
       },
       error: (err) => {

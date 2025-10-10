@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     });
 
     // Récupération de l'utilisateur connecté
-    this.authService.currentAdmin$.subscribe((user: any) => {
+    this.authService.currentAdmin$.subscribe((user) => {      
       this.user = user;
     });
   }

@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
-use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
