@@ -5,6 +5,7 @@ import { MentionsComponent } from './components/mentions/mentions.component';
 import { ProduitsComponent } from './components/produits/produits.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { PolitiqueConfidentialiteComponent } from './components/politique-confidentialite/politique-confidentialite.component';
 
 export const routes: Routes = [
 
@@ -18,6 +19,7 @@ export const routes: Routes = [
   {path: 'contact', component: ContactComponent},
   {path: 'plan-du-site', component: SitemapComponent},
   {path: 'mentions-legales', component: MentionsComponent},
+  {path: 'politique-confidentialite', component: PolitiqueConfidentialiteComponent},
   {path:'**',redirectTo:''}
 
 ];

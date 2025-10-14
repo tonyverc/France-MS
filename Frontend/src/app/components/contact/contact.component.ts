@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contact',
@@ -12,8 +13,11 @@ import { RouterModule } from '@angular/router';
 })
 export class ContactComponent {
 
-  imgForm:string = 'assets/images/peniche-formulaire.jpg'
+  imgForm: string = 'assets/images/peniche-formulaire.jpg';
   contactForm: FormGroup;
+
+  alertMessage: string | null = null;
+  alertType: 'success' | 'error' = 'success';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.contactForm = this.fb.group({
@@ -25,29 +29,31 @@ export class ContactComponent {
     });
   }
 
-alertMessage: string | null = null;
-alertType: 'success'| 'error' = 'success';
+  // Méthode générique pour envoyer le message à l'API
+  createMessage(data: any): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>('http://localhost:8000/api/message', data);
+  }
 
-// soumission du formulaire a l'api
-onSubmit() {
-  if (this.contactForm.valid) {
-    this.http.post<{ success: boolean; message: string }>(
-      'http://localhost:8000/api/message',
-      this.contactForm.value
-    ).subscribe({
+  // Soumission du formulaire
+  onSubmit() {
+    if (this.contactForm.invalid) {
+      this.alertMessage = '❌ Veuillez remplir correctement tous les champs.';
+      this.alertType = 'error';
+      return;
+    }
 
-      //gestion du message de confirmation ou echec de l'envoi du message
-      next: () => {
-        this.alertMessage = '✅ Votre message a bien été envoyé !';
+    this.createMessage(this.contactForm.value).subscribe({
+      next: (res) => {
+        this.alertMessage = res.message || '✅ Votre message a bien été envoyé !';
         this.alertType = 'success';
         this.contactForm.reset();
-        setTimeout(() => this.alertMessage = '', 4000); // auto-disparition de l'alerte aprés 4s
+        setTimeout(() => this.alertMessage = null, 4000); // disparition automatique
       },
-      error: () => {
-        this.alertMessage = "❌ Erreur lors de l'envoi du message.";
+      error: (err) => {
+        console.error('Erreur API:', err);
+        this.alertMessage = err.error?.message || "❌ Erreur lors de l'envoi du message.";
         this.alertType = 'error';
       }
     });
   }
-}
 }

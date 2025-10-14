@@ -14,6 +14,11 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    admin_custom_login:
+      pattern: ^/api/admin/custom-login$
+      stateless: true
+      security: false
+
     login:
       pattern: ^/api/admin/login$
       stateless: true

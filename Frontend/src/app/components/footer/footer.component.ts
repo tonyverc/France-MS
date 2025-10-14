@@ -17,6 +17,7 @@ export class FooterComponent {
   information:string = "Besoin d'informations ? Contactez-nous !";
   aMention:string = 'Mentions légales';
   aPlan:string = 'Plan du site';
+  aPolitique:string = 'Politique de confidentialité';
   contact:string = 'Nous contacter';
   
   // mise a jour de la date du copyright dynamique

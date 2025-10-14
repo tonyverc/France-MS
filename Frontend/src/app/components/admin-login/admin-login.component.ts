@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AdminAuthService } from '../../services/admin-auth.service';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-login',
@@ -15,15 +14,16 @@ export class AdminLoginComponent implements OnInit {
 
   loginForm!: FormGroup;
   errorMessage: string = '';
-  imgForm : string ='assets/images/peniche-2.jpg'
+  loading = false;
+  imgForm: string = 'assets/images/peniche-2.jpg';
 
   constructor(
-    private fb: FormBuilder , 
+    private fb: FormBuilder,
     private router: Router,
     private authService: AdminAuthService
   ) {}
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       nom: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -31,28 +31,48 @@ export class AdminLoginComponent implements OnInit {
     });
   }
 
-  // Gestion de la soumission du formulaire erreur ou redirection vers le login
-  onSubmit() {
+  // Gestion de la soumission du formulaire
+  onSubmit(): void {
     if (this.loginForm.invalid) {
-      this.errorMessage = 'Veuillez remplir tous les champs';
+      this.errorMessage = 'Veuillez remplir tous les champs correctement';
       return;
     }
-    this.login();
-  }
 
-  // récupérer l'admin connecté
-  login(){
-    const { email, password } = this.loginForm.value;
-    this.authService.login(email, password).subscribe({
-      next: (res: any) => {
-        localStorage.setItem('token', res.token)
-        window.location.href = 'http://localhost:8000/admin/';
+    this.loading = true;
+    this.errorMessage = '';
+
+    // ✅ Récupérer les 3 champs (nom, email, password)
+    const { nom, email, password } = this.loginForm.value;
+    
+
+    // ✅ Appeler le service avec les 3 paramètres
+    this.authService.login(nom, email, password).subscribe({
+      next: (response) => {
+        console.log('✅ Connexion réussie:', response);
+        this.loading = false;
+                
+        // ✅ Redirection vers la page d'accueil
+        this.router.navigate(['/']).then(() => {
+        });
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Nom, email ou mot de passe incorrect';
+        this.loading = false;
+        // Afficher le message d'erreur du backend
+        this.errorMessage = err.error?.message || 'Une erreur est survenue lors de la connexion';
       }
     });
   }
 
-}
+  // Helper methods pour faciliter l'accès aux contrôles dans le template
+  get nom() {
+    return this.loginForm.get('nom');
+  }
 
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+}
