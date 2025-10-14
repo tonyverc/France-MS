@@ -35,7 +35,9 @@ export class SitemapComponent {
     
     { label: 'Plan du site', link: '/plan-du-site' },
 
-    { label: 'Connexion Admin', link: '/login' }
+    { label: 'Connexion Admin', link: '/login' },
+
+    { label: 'Politique de confidentialité', link: '/politique-confidentialite' }
   ];
 
 }

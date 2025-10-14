@@ -15,6 +15,7 @@ export class ProduitsComponent implements OnInit {
   produitsPage: Produit[] = [];
   sousCategories: SousCategorie[] = [];
   categorieId!: number;
+  categorieSlug!: string;
   categorieNom!: string;
   sousCategorieNom!: string;
   currentPage = 1;

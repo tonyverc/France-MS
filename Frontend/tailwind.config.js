@@ -11,6 +11,6 @@ module.exports = {
     require('@tailwindcss/line-clamp')
   ],
   daisyui: {
-    themes: ["entreprise","dark"], // ou ton thème custom
+    themes: ["business","dark"], // ou ton thème custom
   },
 }

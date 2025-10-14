@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, viewChild } from '@angular/core';
 import { ProduitService } from '../../services/produits.service';
 import { Categorie } from '../../models/produits.model';
 import { Router, RouterModule } from '@angular/router';
@@ -11,7 +11,8 @@ import { CardProduitsComponent } from '../card-produits/card-produits.component'
   imports: [CommonModule, RouterModule, CardProduitsComponent],
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit, OnInit {
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
   categories: Categorie[] = [];
 
   cardContent = [
@@ -29,18 +30,40 @@ export class HomeComponent {
 
   constructor(private produitsService: ProduitService, private router: Router) {}
 
-ngOnInit() {
-  this.produitsService.getCategories().subscribe({
-    next: (data) => {
-      this.categories = data.map((cat, index) => ({
-        ...cat,
-        imageUrl: this.cardContent[index]?.imageUrl || '',
-        description: this.cardContent[index]?.description || '',
-        link: `/produits/${cat.id}`,  // routing vers ProduitsComponent
-      }));
-    },
-  });
-}
+  ngOnInit() {
+    this.produitsService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data.map((cat, index) => ({
+          ...cat,
+          imageUrl: this.cardContent[index]?.imageUrl || '',
+          description: this.cardContent[index]?.description || '',
+          link: `/produits/${cat.id}`,  // routing vers ProduitsComponent
+        }));
+      },
+    });
+  }
+
+  ngAfterViewInit() {
+    // attendre le chargement de la page avant de lancer la vidéo
+    setTimeout(() => {
+      this.playVideo();
+    }, 100);
+  }
+    
+  playVideo(){
+    const video = this.videoPlayer?.nativeElement;
+    if(video){
+      video.muted = true;
+      video.play().catch(error=>{
+       console.error('Erreur lecture vidéo:', error);
+       // recommencer aprés 1 seconde
+       setTimeout(()=>
+        video.play().catch(error=>console.error('Erreur lecture vidéo:', error)), 1000
+      )
+        
+      })
+    }
+  }
 
   selectCategorie(categorieId: number) {
     this.produitsService.setCategorieActive(categorieId);
