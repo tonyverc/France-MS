@@ -15,7 +15,8 @@
 		<!-- Si l'utilisateur EST connecté -->
 		<div *ngIf="user" class=" mt-3 order-2 lg:order-3 md:order-2 bg-[#A39F22] text-white px-4 py-2 rounded-xl flex items-center justify-center w-full sm:w-auto lg:self-start">
 			<app-icon name="user"></app-icon>
-			<span class="ml-2 text-lg">Bonjour {{ user?.nom }}</span>
+			<span class="ml-2 text-lg">Bonjour
+				{{ user?.nom }}</span>
 			<button (click)="logout()" class="ml-3 bg-[#fff] text-[#A39F22] p-4  py-1 rounded-lg hover:bg-[#f2f2f2]  text-xl font-bold cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition duration-300 ease-in-out ">
 				Déconnexion
 			</button>
@@ -25,10 +26,10 @@
 		src="assets/images/Logo-France-Marine-Services.png" alt="Logo" class="order-1 max-w-32 sm:max-w-48 w-auto self-start"/>
 
 		<!-- Barre de recherche -->
-		<label class="order-3 sm:order-2 input flex items-center rounded-xl w-full sm:w-auto self-center">
-			<app-icon name="search"></app-icon>
-			<input type="search" placeholder="Rechercher" class="rounded w-full text-xl text-black px-2 py-1 outline-none"/>
-		</label>
+		<div class="order-3 sm:order-2 flex items-center gap-2 rounded-xl w-full sm:w-auto self-center bg-white border border-gray-300 px-3 py-2">
+			<app-icon name="search" class="shrink-0 cursor-default"></app-icon>
+			<input type="search" placeholder="Rechercher" class="grow text-xl text-black outline-none border-none bg-transparent cursor-text"/>
+		</div>
 	</div>
 
 	<!-- Menu desktop -->
@@ -62,10 +63,10 @@
 				<span>Contact</span>
 			</a>
 		</li>
-    <!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
+		<!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
 		<li *ngIf="user">
 			<a (click)="redirectToEasy()" class="text-white font-bold text-3xl hover:text-yellow-400 flex items-center space-x-2 cursor-pointer">
-      	<app-icon name="user"></app-icon>
+				<app-icon name="user"></app-icon>
 				<span>Administration</span>
 			</a>
 		</li>
@@ -84,7 +85,7 @@
 		<div
 			[ngClass]="{'max-h-0 overflow-hidden': !isMenuOpen, 'max-h-screen': isMenuOpen}" class="transition-all duration-300 ease-in-out mt-2">
 			<!-- Accueil -->
-			<a routerlink="" class=" text-white text-2xl font-bold mb-2 hover:text-yellow-400 flex items-center" (click)="closeMenu()">
+			<a routerLink="" class=" text-white text-2xl font-bold mb-2 hover:text-yellow-400 flex items-center" (click)="closeMenu()">
 				<app-icon name="home"></app-icon>
 				<span class="ml-2 cursor-pointer">Accueil</span>
 			</a>
@@ -108,16 +109,16 @@
 			</ng-container>
 
 			<!-- Contact -->
-			<a routerlink="contact" class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center cursor-pointer" (click)="closeMenu()">
+			<a routerLink="contact" class=" text-white text-2xl font-bold mt-2 hover:text-yellow-400 flex items-center cursor-pointer" (click)="closeMenu()">
 				<app-icon name="contact"></app-icon>
 				<span class="ml-2">Contact</span>
 			</a>
-          <!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
-		<li *ngIf="user">
-			<a (click)="redirectToEasy()" class="text-white font-bold text-2xl mt-2 hover:text-yellow-400 flex items-center cursor-pointer">
-				<span>Administration</span>
-			</a>
-		</li>
+			<!-- Lien vers l'administration, visible uniquement si l'utilisateur est connecté -->
+			<li *ngIf="user">
+				<a (click)="redirectToEasy()" class="text-white font-bold text-2xl mt-2 hover:text-yellow-400 flex items-center cursor-pointer">
+					<span>Administration</span>
+				</a>
+			</li>
 
 		</div>
 	</div>

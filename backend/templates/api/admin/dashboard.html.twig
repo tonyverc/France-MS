@@ -1,48 +1,151 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content %}
-	<div class="container py-4">
-		<h1 class="h3 mb-4 text-center">Tableau de bord Administration</h1>
-        <h2>Bienvenue : {{ nom }}</h2>
+{% block content_title %}
+    <i class="fas fa-chart-line me-2"></i>Tableau de bord
+{% endblock %}
 
-		<div
-			class="row g-4">
-			<!-- Card Produits -->
-			<div class="col-md-4">
-				<div class="card text-center shadow-sm">
-					<div class="card-body">
-						<h5 class="card-title">Produits</h5>
-						<p class="card-text text-muted ">Gérer tous les produits du site</p>
-						<a href="{{ path('admin', {crudControllerFqcn: 'App\\Controller\\Admin\\ProduitCrudController'}) }}" class="btn btn-primary">
-							Accéder au CRUD
-						</a>
-					</div>
-				</div>
-			</div>
+{% block main %}
+<div class="container-fluid">
+    <!-- Carte de bienvenue -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-2">
+                                <i class="fas fa-wave-square text-primary me-2"></i>
+                                Bienvenue, <strong class="text-primary">{{ nom }}</strong>
+                            </h3>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-envelope me-2"></i>{{ email }}
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-calendar-day me-2"></i>{{ 'now'|date('d/m/Y') }}
+                            </p>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-clock me-2"></i>{{ 'now'|date('H:i') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			<!-- Card Catégories -->
-			<div class="col-md-4">
-				<div class="card text-center shadow-sm">
-					<div class="card-body">
-						<h5 class="card-title">Catégories</h5>
-						<p class="card-text text-muted">Gérer les catégories</p>
-						<a href="#" class="btn btn-success">Accéder au CRUD</a>
-					</div>
-				</div>
-			</div>
+    <!-- Statistiques -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-box fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Produits</h6>
+                            <h3 class="mb-0">{{ produits_count|default(0) }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<!-- Card Sous-catégories -->
-			<div class="col-md-4">
-				<div class="card text-center shadow-sm">
-					<div class="card-body">
-						<h5 class="card-title">Sous-catégories</h5>
-						<p class="card-text text-muted">Gérer les sous-catégories</p>
-						<a href="#" class="btn btn-warning">Accéder au CRUD</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	<a href="http://localhost:4200" class="btn btn-primary">Retour au site</a>
-	</div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-folder fa-2x text-success"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Catégories</h6>
+                            <h3 class="mb-0">{{ categories_count|default(0) }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-info bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-folder-open fa-2x text-info"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Sous-catégories</h6>
+                            <h3 class="mb-0">{{ sous_categories_count|default(0) }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-envelope fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted mb-1">Messages</h6>
+                            <h3 class="mb-0">{{ messages_count|default(0) }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header">
+                    <i class="fas fa-bolt me-2"></i>Actions rapides
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <a href="{{ ea_url().setController('App\\Controller\\Admin\\ProduitCrudController').setAction('new') }}" 
+                               class="btn btn-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Nouveau produit
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ ea_url().setController('App\\Controller\\Admin\\CategorieCrudController').setAction('new') }}" 
+                               class="btn btn-success w-100">
+                                <i class="fas fa-plus me-2"></i>Nouvelle catégorie
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ ea_url().setController('App\\Controller\\Admin\\MessageCrudController').setAction('index') }}" 
+                               class="btn btn-warning w-100">
+                                <i class="fas fa-envelope-open me-2"></i>Voir les messages
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="http://localhost:4200/" target="_blank" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-external-link-alt me-2"></i>Voir le site
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -17,6 +17,32 @@ body{
   min-height: 100vh;
 }
 
+/* Animation pour bateau SVG */
+.boat-moving-svg {
+  position: absolute;
+  bottom: 20px;
+  animation: sailSvg 20s linear infinite;
+}
+
+@keyframes sailSvg {
+  0% {
+    left: -100px;
+    transform: translateY(0px) rotate(-2deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(-2deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  100% {
+    left: 100%;
+    transform: translateY(0px) rotate(-2deg);
+  }
+}
 
 
 
