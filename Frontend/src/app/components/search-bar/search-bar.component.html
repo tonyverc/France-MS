@@ -1,4 +1,4 @@
-<div class="search-container relative w-full max-w-2xl">
+<div class="search-container relative w-full max-w-2xl bg-white rounded-lg shadow-md">
   <!-- Input de recherche -->
   <div class="relative">
     <!-- Icône de recherche -->
@@ -72,41 +72,7 @@
         </div>
       </div>
 
-      <!-- Articles -->
-      <div *ngIf="results.results.articles && results.results.articles.length > 0" class="border-b border-gray-100 last:border-b-0">
-        <h3 class="text-xs font-semibold uppercase text-gray-500 px-4 py-2">
-          Articles
-        </h3>
-        <div 
-          *ngFor="let article of results.results.articles"
-          class="flex items-start px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-          (click)="navigateTo('articles', article.id)"
-        >
-          <div class="text-2xl mr-3 flex-shrink-0">📄</div>
-          <div class="flex-1 min-w-0">
-            <div class="font-medium text-gray-900 mb-1">{{ article.titre }}</div>
-            <div class="text-sm text-gray-500 truncate">{{ article.description }}</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Utilisateurs -->
-      <div *ngIf="results.results.users && results.results.users.length > 0" class="border-b border-gray-100 last:border-b-0">
-        <h3 class="text-xs font-semibold uppercase text-gray-500 px-4 py-2">
-          Utilisateurs
-        </h3>
-        <div 
-          *ngFor="let user of results.results.users"
-          class="flex items-start px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-          (click)="navigateTo('users', user.id)"
-        >
-          <div class="text-2xl mr-3 flex-shrink-0">👤</div>
-          <div class="flex-1 min-w-0">
-            <div class="font-medium text-gray-900 mb-1">{{ user.nom }}</div>
-            <div class="text-sm text-gray-500 truncate">{{ user.email }}</div>
-          </div>
-        </div>
-      </div>
 
       <!-- Footer avec le nombre de résultats -->
       <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 text-center text-xs text-gray-500">

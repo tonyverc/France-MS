@@ -19,8 +19,10 @@ class ProduitRepository extends ServiceEntityRepository
     public function search(string $query, int $limit = 10): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.name LIKE :query')
-            ->setParameter('query', "%$query%")
+            ->Where('p.nom LIKE :query')
+            ->orWhere('p.description LIKE :query')
+            ->orWhere('p.fiche_technique LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

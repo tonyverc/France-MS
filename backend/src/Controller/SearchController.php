@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,23 +18,34 @@ final class SearchController extends AbstractController
 
         if (strlen($query) < 2) {
             return $this->json([
-                'results' => [],
-                'message' => 'Veuillez entrer au moins 2 caractères'
+                'results' => [
+                    'products' => []
+                ],
+                'message' => 'Veuillez entrer au moins 2 caractères',
+                'total' => 0,
+                'query' => $query
             ]);
         }
         
-        // Recherche dans différentes entités
-        $results = [
-            'products' => $produitRepository->search($query, 5),
-            // Ajoutez d'autres catégories
-        ];
+        $products = $produitRepository->search($query, 5);
         
-        // Compte total des résultats
-        $total = array_sum(array_map('count', $results));
+        // Sérialisation manuelle pour éviter les références circulaires
+        $productsData = [];
+        foreach ($products as $product) {
+            $productsData[] = [
+                'id' => $product->getId(),
+                'nom' => $product->getNom(),
+                'description' => $product->getDescription(),
+                'image' => $product->getImage(),
+                'fiche_technique' => $product->getFicheTechnique()
+            ];
+        }
         
         return $this->json([
-            'results' => $results,
-            'total' => $total,
+            'results' => [
+                'products' => $productsData
+            ],
+            'total' => count($productsData),
             'query' => $query
         ]);
     }

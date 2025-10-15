@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, NgModule } from '@angular/core';
 import { SearchService, SearchResults } from '../../services/search.service.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
+  imports: [CommonModule, FormsModule],
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.scss']
+  styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   searchQuery = '';
