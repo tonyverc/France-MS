@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Categorie;
 use App\Entity\SousCategorie;
+use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -29,6 +30,7 @@ class ProduitController extends AbstractController
         foreach ($categorie->getSousCategorie() as $sousCat) {
             foreach ($sousCat->getProduits() as $produit) {
                 $produits[] = [
+                    'id' => $produit->getId(), // ← AJOUTEZ CECI
                     'nom' => $produit->getNom(),
                     'description' => strip_tags($produit->getDescription()),
                     'image' => $produit->getImage() ? $this->buildFullUrl('/uploads/images/' . $produit->getImage()) : null,
@@ -41,7 +43,7 @@ class ProduitController extends AbstractController
         return $this->json($produits);
     }
 
-    //  Tous les produits d'une sous-catégorie
+    // Tous les produits d'une sous-catégorie
     #[Route('/souscategories/{id}/produits', name: 'api_souscategorie_produits', methods: ['GET'])]
     public function produitsSousCategorie(int $id, EntityManagerInterface $em): JsonResponse
     {
@@ -51,6 +53,7 @@ class ProduitController extends AbstractController
         $produits = [];
         foreach ($sousCat->getProduits() as $produit) {
             $produits[] = [
+                'id' => $produit->getId(), // ← AJOUTEZ CECI
                 'nom' => $produit->getNom(),
                 'image' => $produit->getImage() ? $this->buildFullUrl('/uploads/images/' . $produit->getImage()) : null,
                 'description' => strip_tags($produit->getDescription()),
@@ -62,7 +65,37 @@ class ProduitController extends AbstractController
         return $this->json($produits);
     }
 
-    // Liste des catégories principales
+    //  Détail d'un produit par ID
+    #[Route('/produits/{id}', name: 'api_produit_detail', methods: ['GET'])]
+    public function detailProduit(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        try {
+            // Étape 1 : Trouver le produit
+            $produit = $em->getRepository(Produit::class)->find($id);
+            
+            if (!$produit) {
+                return $this->json(['error' => 'Produit introuvable'], 404);
+            }
+
+            // Étape 2 : Données de base uniquement
+            $data = [
+                'id' => $produit->getId(),
+                'nom' => $produit->getNom(),
+                'image' => $produit->getImage() ? $this->buildFullUrl('/uploads/images/' . $produit->getImage()) : null,
+                'description' => strip_tags($produit->getDescription()),
+                'fiche_technique' => $produit->getFicheTechnique() ? basename($produit->getFicheTechnique()) : null,
+            ];
+
+            return $this->json($data);
+
+        } catch (\Exception $e) {
+            return $this->json([
+                'error' => 'Erreur: ' . $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
+        }
+    }   
+     // Liste des catégories principales
     #[Route('/categories', name: 'api_categories', methods: ['GET'])]
     public function listCategories(EntityManagerInterface $em): JsonResponse
     {
@@ -109,6 +142,7 @@ class ProduitController extends AbstractController
     }
 
     // Téléchargement de la fiche technique d'un produit
+    #[Route('/produits/fiche/{filename}', name: 'api_telecharger_fiche', methods: ['GET'])]
     public function telechargerFiche(string $filename): BinaryFileResponse
     {
         $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/fiches_techniques/' . $filename;
@@ -119,6 +153,4 @@ class ProduitController extends AbstractController
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
         return $response;
     }
-
-    
 }

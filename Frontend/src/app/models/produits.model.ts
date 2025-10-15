@@ -4,13 +4,13 @@ export interface Produit {
   image: string;
   description: string;
   fiche_technique: string;
-  sousCategories: SousCategorie[];
+  sousCategories: SousCategorie;
 }
 
 export interface SousCategorie {
   id: number;
   nom: string;
-  categorie : Categorie [];
+  categorie : Categorie;
 }
 
 export interface Categorie {

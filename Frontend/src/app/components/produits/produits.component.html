@@ -1,104 +1,144 @@
-<div class="w-full bg-white">
-  <!-- Breadcrumbs - Aligné en haut à gauche -->
-  <div class="breadcrumbs text-lg py-4 px-6 bg-gray-50">
-    <ul class="flex items-center space-x-2">
-      <!-- Accueil -->
-      <li class="flex items-center">
-        <a [routerLink]="'/'" class="flex items-center hover:text-[#34219A] transition-colors">
-          <!-- Icône Home -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current mr-2"
-               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
-          </svg>
-          Accueil
-        </a>
-      </li>
+<!-- MODE LISTE -->
+<div *ngIf="displayMode === 'list'" class="container mx-auto p-6">
+  <!-- Breadcrumb -->
+  <nav class="text-sm mb-4 text-gray-600">
+    <a routerLink="/" class="hover:text-blue-500">Accueil</a>
+    <span class="mx-2">/</span>
+    <span *ngIf="categorieNom">{{ categorieNom }}</span>
+    <span *ngIf="sousCategorieNom" class="mx-2">/</span>
+    <span *ngIf="sousCategorieNom">{{ sousCategorieNom }}</span>
+  </nav>
 
-      <!-- Sous-catégorie (page actuelle) -->
-      <li *ngIf="sousCategorieNom" class="flex items-center text-gray-600 font-medium">
-        <!-- Icône Produits -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current mr-2" 
-             viewBox="0 0 640 640" fill="currentColor">
-          <path d="M544 144C552.8 144 560 151.2 560 160L560 480C560 488.8 552.8 496 544 496L96 496C87.2 496 80 488.8 80 480L80 160C80 151.2 87.2 144 96 144L544 144zM96 96C60.7 96 32 124.7 32 160L32 480C32 515.3 60.7 544 96 544L544 544C579.3 544 608 515.3 608 480L608 160C608 124.7 579.3 96 544 96L96 96zM240 312C270.9 312 296 286.9 296 256C296 225.1 270.9 200 240 200C209.1 200 184 225.1 184 256C184 286.9 209.1 312 240 312zM208 352C163.8 352 128 387.8 128 432C128 440.8 135.2 448 144 448L336 448C344.8 448 352 440.8 352 432C352 387.8 316.2 352 272 352L208 352zM408 208C394.7 208 384 218.7 384 232C384 245.3 394.7 256 408 256L488 256C501.3 256 512 245.3 512 232C512 218.7 501.3 208 488 208L408 208zM408 304C394.7 304 384 314.7 384 328C384 341.3 394.7 352 408 352L488 352C501.3 352 512 341.3 512 328C512 314.7 501.3 304 488 304L408 304z"/>
-        </svg>
-        {{ sousCategorieNom }}
-      </li>
+  <!-- Titre -->
+  <h1 class="text-3xl font-bold mb-6">
+    {{ sousCategorieNom || categorieNom || 'Produits' }}
+  </h1>
 
-      <!-- Si pas de sous-catégorie, afficher directement Produits -->
-      <li *ngIf="!sousCategorieNom && categorieNom" class="flex items-center text-gray-600 font-medium">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 stroke-current mr-2" 
-             viewBox="0 0 640 640" fill="currentColor">
-          <path d="M544 144C552.8 144 560 151.2 560 160L560 480C560 488.8 552.8 496 544 496L96 496C87.2 496 80 488.8 80 480L80 160C80 151.2 87.2 144 96 144L544 144zM96 96C60.7 96 32 124.7 32 160L32 480C32 515.3 60.7 544 96 544L544 544C579.3 544 608 515.3 608 480L608 160C608 124.7 579.3 96 544 96L96 96zM240 312C270.9 312 296 286.9 296 256C296 225.1 270.9 200 240 200C209.1 200 184 225.1 184 256C184 286.9 209.1 312 240 312zM208 352C163.8 352 128 387.8 128 432C128 440.8 135.2 448 144 448L336 448C344.8 448 352 440.8 352 432C352 387.8 316.2 352 272 352L208 352zM408 208C394.7 208 384 218.7 384 232C384 245.3 394.7 256 408 256L488 256C501.3 256 512 245.3 512 232C512 218.7 501.3 208 488 208L408 208zM408 304C394.7 304 384 314.7 384 328C384 341.3 394.7 352 408 352L488 352C501.3 352 512 341.3 512 328C512 314.7 501.3 304 488 304L408 304z"/>
-        </svg>
-		{{ categorieNom }}
-      </li>
-    </ul>
+  <!-- Grille de produits -->
+  <div class="grid md:grid-cols-4 gap-6 mb-8">
+    <div 
+      *ngFor="let produit of produitsPage"
+      class="border rounded-lg p-4 hover:shadow-lg cursor-pointer transition"
+      (click)="viewDetail(produit.id)"
+    >
+      <img 
+        [src]="produit.image || 'https://via.placeholder.com/300x200?text=Pas+d\'image'" 
+        [alt]="produit.nom"
+        class="w-full h-48 object-cover rounded mb-3"
+      >
+      <h3 class="font-semibold text-lg mb-2">{{ produit.nom }}</h3>
+      <p class="text-gray-600 text-sm line-clamp-2">{{ produit.description }}</p>
+    </div>
   </div>
 
-  <!-- Contenu de la page -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Pagination -->
+  <div class="flex justify-center gap-2" *ngIf="totalPages > 1">
+    <button 
+      (click)="setPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="px-4 py-2 border rounded disabled:opacity-50"
+    >
+      Précédent
+    </button>
     
-    <!-- Titre -->
-    <h1 class="text-4xl font-bold text-center mb-12 text-gray-900">
-      Produits de la catégorie {{ sousCategorieNom || categorieNom }}
-    </h1>
+    <button 
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      (click)="setPage(i + 1)"
+      [class.bg-blue-500]="currentPage === i + 1"
+      [class.text-white]="currentPage === i + 1"
+      class="px-4 py-2 border rounded hover:bg-gray-100"
+    >
+      {{ i + 1 }}
+    </button>
+    
+    <button 
+      (click)="setPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="px-4 py-2 border rounded disabled:opacity-50"
+    >
+      Suivant
+    </button>
+  </div>
+</div>
 
-    <!-- Liste des produits -->
-    <div *ngIf="produits.length > 0; else aucunProduit" 
-         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- MODE DÉTAIL -->
+<div *ngIf="displayMode === 'detail' && produitDetail" class="container mx-auto p-6">
+  <!-- Bouton retour -->
+  <button 
+    (click)="backToList()" 
+    class="mb-6 flex items-center text-blue-500 hover:text-blue-700 transition"
+  >
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    Retour à la liste
+  </button>
+
+  <!-- Breadcrumb -->
+  <nav class="text-sm mb-4 text-gray-600">
+    <a routerLink="/" class="hover:text-blue-500">Accueil</a>
+    <span class="mx-2">/</span>
+    <a 
+      *ngIf="produitDetail.sousCategories?.categorie"
+      [routerLink]="['/produits/categories', produitDetail.sousCategories.categorie.id]"
+      class="hover:text-blue-500"
+    >
+      {{ produitDetail.sousCategories.categorie.nom }}
+    </a>
+    <span class="mx-2" *ngIf="produitDetail.sousCategories">/</span>
+    <span *ngIf="produitDetail.sousCategories">{{ produitDetail.sousCategories.nom }}</span>
+    <span class="mx-2">/</span>
+    <span class="font-semibold">{{ produitDetail.nom }}</span>
+  </nav>
+
+  <!-- Contenu produit -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Image -->
+    <div class="border-4 border-gray-300 p-4">
+      <img 
+        [src]="produitDetail.image || 'https://via.placeholder.com/600x400?text=Pas+d\'image'" 
+        [alt]="produitDetail.nom"
+        class="w-full rounded-lg shadow-lg"
+      >
+    </div>
+    
+    <!-- Informations -->
+    <div>
+      <h1 class="text-4xl font-bold mb-4">{{ produitDetail.nom }}</h1>
       
-      <div *ngFor="let produit of produitsPage" 
-           class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center text-center hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out">
-
-        <!-- Image -->
-        <img *ngIf="produit.image" 
-             [src]="produit.image" 
-             [alt]="produit.nom" 
-             class="rounded-xl w-full h-64 object-cover mb-4"/>
-
-        <!-- Nom du produit -->
-        <h3 class="text-2xl font-semibold mb-2">{{ produit.nom }}</h3>
-
-        <!-- Description -->
-        <p class="text-base mb-4 line-clamp-4 text-gray-600">{{ produit.description }}</p>
-
-        <!-- Bouton fiche technique -->
-        <a *ngIf="produit.fiche_technique"
-           [href]="produit.fiche_technique" 
-           download
-           class="mt-auto inline-flex items-center px-4 py-2 bg-[#34219A] text-white font-semibold rounded-lg hover:bg-opacity-90 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <div class="mb-6">
+        <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+          {{ produitDetail.sousCategories?.nom }}
+        </span>
+      </div>
+      
+      <div class="prose max-w-none mb-6">
+        <h2 class="text-xl font-semibold mb-3">Description</h2>
+        <div [innerHTML]="produitDetail.description"></div>
+      </div>
+      
+      <!-- Fiche technique -->
+      <div *ngIf="produitDetail.fiche_technique" class="mt-8">
+        <button 
+          (click)="downloadFiche(produitDetail.fiche_technique)"
+          class="bg-[#A39F22] text-white px-6 py-3 rounded-lg hover:bg-green-600 transition flex items-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
-          Télécharger la fiche
-        </a>
+          Télécharger la fiche technique
+        </button>
+      </div>
+      
+      <!-- Bouton contact -->
+      <div class="mt-6">
+        <button 
+          routerLink="/contact"
+          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
+        >
+          Demander un devis
+        </button>
       </div>
     </div>
-
-    <!-- Pagination -->
-    <div *ngIf="produits.length > 0" class="flex justify-center mt-12 gap-2">
-      <button *ngFor="let page of [].constructor(totalPages); let i = index" 
-              (click)="setPage(i + 1)" 
-              class="px-4 py-2 rounded-lg font-semibold transition-colors"
-              [class.bg-[#34219A]]="currentPage === i + 1"
-              [class.text-white]="currentPage === i + 1"
-              [class.bg-gray-200]="currentPage !== i + 1"
-              [class.hover:bg-[#34219A]]="currentPage !== i + 1"
-              [class.hover:text-white]="currentPage !== i + 1">
-        {{ i + 1 }}
-      </button>
-    </div>
-
-    <!-- Message si aucun produit -->
-    <ng-template #aucunProduit>
-      <div class="text-center py-20">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-        </svg>
-        <p class="text-xl text-gray-500">Aucun produit trouvé pour cette catégorie.</p>
-      </div>
-    </ng-template>
-
   </div>
 </div>

@@ -31,6 +31,11 @@ export class ProduitService {
   }
 
   // --- API appels --- //
+
+  getById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/produits/${id}`);
+  }
+  
   getCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(`${this.apiUrl}/categories`);
   }

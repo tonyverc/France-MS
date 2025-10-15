@@ -13,6 +13,7 @@ export const routes: Routes = [
   {path: 'login', component: AdminLoginComponent},
   {path: 'produits/categories/:id', component: ProduitsComponent},
   {path: 'produits/souscategorie/:id', component: ProduitsComponent},
+  {path: 'produits/:id', component: ProduitsComponent},
   {path: 'lubrifiants', component: HomeComponent},
   {path: 'graisses', component: HomeComponent},
   {path: 'filtrations', component: HomeComponent},

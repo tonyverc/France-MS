@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProduitService } from '../../services/produits.service';
 import { Produit, SousCategorie } from '../../models/produits.model';
 
@@ -11,6 +11,10 @@ import { Produit, SousCategorie } from '../../models/produits.model';
   templateUrl: './produits.component.html',
 })
 export class ProduitsComponent implements OnInit {
+  // Mode d'affichage
+  displayMode: 'list' | 'detail' = 'list';
+  
+  // Liste
   produits: Produit[] = [];
   produitsPage: Produit[] = [];
   sousCategories: SousCategorie[] = [];
@@ -21,9 +25,13 @@ export class ProduitsComponent implements OnInit {
   currentPage = 1;
   pageSize = 8;
   totalPages = 1;
+  
+  // Détail
+  produitDetail: Produit | null = null;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private produitService: ProduitService
   ) {}
 
@@ -31,12 +39,50 @@ export class ProduitsComponent implements OnInit {
     // Écoute des changements d'URL
     this.route.paramMap.subscribe(params => {
       const idFromUrl = Number(params.get('id'));
-      const isSousCat = this.route.snapshot.url.some(seg => seg.path === 'souscategorie');
+      const url = this.router.url;
+      
+      // Déterminer le mode en fonction de l'URL
+      const isSousCat = url.includes('/souscategorie/');
+      const isCategorie = url.includes('/categories/');
+      const isProduitDetail = url.startsWith('/produits/') && !isSousCat && !isCategorie;
 
-      if (isSousCat) {
+      if (isProduitDetail) {
+        // Mode détail produit
+        this.displayMode = 'detail';
+        this.loadProduitById(idFromUrl);
+      } else if (isSousCat) {
+        // Mode liste par sous-catégorie
+        this.displayMode = 'list';
         this.loadProduitsBySousCategorie(idFromUrl);
-      } else {
+      } else if (isCategorie) {
+        // Mode liste par catégorie
+        this.displayMode = 'list';
         this.loadProduitsByCategorie(idFromUrl);
+      }
+    });
+  }
+
+  // Produit par ID (pour le mode détail)
+  private loadProduitById(id: number): void {
+    this.produitService.getById(id).subscribe({
+      next: produit => {
+        // Préfixer les URLs
+        this.produitDetail = {
+          ...produit,
+          image: produit.image 
+            ? (produit.image.startsWith('http') ? produit.image : `http://127.0.0.1:8000/uploads/images/${produit.image}`)
+            : '',
+          fiche_technique: produit.fiche_technique 
+            ? (produit.fiche_technique.startsWith('http') 
+                ? produit.fiche_technique 
+                : `http://127.0.0.1:8000/uploads/fiches_techniques/${produit.fiche_technique}`)
+            : ''
+        };
+      },
+      error: err => {
+        console.error('Erreur chargement produit:', err);
+        // Rediriger vers la page d'accueil si produit introuvable
+        this.router.navigate(['/']);
       }
     });
   }
@@ -82,7 +128,7 @@ export class ProduitsComponent implements OnInit {
   // Pagination + recuperation image et fiche technique du produit
   private initProduits(produits: Produit[]): void {
     // Préfixe les URLs des images et fiches techniques
-  this.produits = produits.map(p => ({
+    this.produits = produits.map(p => ({
       ...p,
       image: p.image 
         ? (p.image.startsWith('http') ? p.image : `http://127.0.0.1:8000/uploads/images/${p.image}`)
@@ -104,9 +150,34 @@ export class ProduitsComponent implements OnInit {
     this.produitsPage = this.produits.slice(start, start + this.pageSize);
   }
 
+  // Navigation vers le détail
+  viewDetail(id: number): void {
+    this.router.navigate(['/produits', id]);
+  }
+
+  // Retour à la liste (depuis le détail)
+  backToList(): void {
+    // Si on a un categorieId en mémoire, retourner à cette catégorie
+    if (this.categorieId) {
+      this.router.navigate(['/produits/categories', this.categorieId]);
+    } else if (this.produitDetail?.sousCategories?.id) {
+      // Sinon essayer via la sous-catégorie du produit
+      this.router.navigate(['/produits/souscategorie', this.produitDetail.sousCategories.id]);
+    } else {
+      // Par défaut, aller à l'accueil
+      this.router.navigate(['/']);
+    }
+  }
+
   // Sélection depuis navbar
   selectSousCategorie(id: number): void {
     this.produitService.setSousCategorieActive(id);
   }
 
+  // Télécharger la fiche technique
+  downloadFiche(url: string): void {
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
 }
