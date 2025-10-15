@@ -35,8 +35,9 @@ final class SearchController extends AbstractController
             $productsData[] = [
                 'id' => $product->getId(),
                 'nom' => $product->getNom(),
-                'description' => $product->getDescription(),
-                'image' => $product->getImage(),
+                'description' => strip_tags($product->getDescription()),
+                'image' => $product->getImage()
+                ? $request->getSchemeAndHttpHost() . '/uploads/images/' . $product->getImage() : null,
                 'fiche_technique' => $product->getFicheTechnique()
             ];
         }

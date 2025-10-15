@@ -21,6 +21,7 @@ class ProduitRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->Where('p.nom LIKE :query')
             ->orWhere('p.description LIKE :query')
+            ->orWhere('p.image LIKE :query')
             ->orWhere('p.fiche_technique LIKE :query')
             ->setParameter('query', '%'.$query.'%')
             ->setMaxResults($limit)
