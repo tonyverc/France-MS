@@ -6,11 +6,12 @@ import { SousCategorie } from '../../models/produits.model';
 import { IconComponent } from '../icon/icon.component';
 import { forkJoin } from 'rxjs';
 import { AdminAuthService } from '../../services/admin-auth.service';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, IconComponent],
+  imports: [CommonModule, RouterModule, IconComponent, SearchBarComponent],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
