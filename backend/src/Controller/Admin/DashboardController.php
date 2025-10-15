@@ -17,6 +17,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
     {
+        /** @var Admin | null */
         $admin = $this->getUser(); // Récupère l'utilisateur actuellement connecté
         // if (!$admin) {
         //     throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
@@ -35,7 +36,10 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setFaviconPath('admin, fa-thin fa-user')
-            ->setTitle('Espace Administration France Marine Services')
+            ->setTitle('<div>
+                            <img src="/images/logo-fms.png" alt="Logo" class="logo">
+                            <span>Administration France Marine Services</span>
+                        </div>')
             ->renderContentMaximized()
             ->setTranslationDomain('admin');
     }
