@@ -28,7 +28,7 @@ class ProduitCrudController extends AbstractCrudController
             TextField::new('nom', 'Nom du produit'),
             TextEditorField::new('description', 'Description'),
 
-            TextField::new('fiche_technique', 'Fiche technique (PDF)')
+            Field::new('fiche_technique', 'Fiche technique (PDF)')
                 ->setFormType(FileType::class)
                 ->setFormTypeOptions([
                     'mapped' => false,     // le champ n'est pas directement lié à l'entité
@@ -42,8 +42,7 @@ class ProduitCrudController extends AbstractCrudController
                         ])
                     ],
                 ])
-                ->onlyOnForms(),
-
+                ->onlyOnIndex(),
 
             ImageField::new('image', 'Image')
                 ->setUploadDir('public/uploads/images')
