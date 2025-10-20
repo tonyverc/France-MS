@@ -1,4 +1,16 @@
 services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fms_php
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+
   db:
     image: mysql:8.0
     container_name: fms_mysql
