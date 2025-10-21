@@ -8,7 +8,7 @@ module.exports = {
   },
   plugins: [
     require('daisyui'),
-    require('@tailwindcss/line-clamp')
+    require('@tailwindcss/line-clamp'),
   ],
   daisyui: {
     themes: ["business","dark"], // ou ton thème custom
