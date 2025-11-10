@@ -42,7 +42,7 @@ class ProduitCrudController extends AbstractCrudController
                         ])
                     ],
                 ])
-                ->onlyOnIndex(),
+                ->onlyOnForms(),
 
             ImageField::new('image', 'Image')
                 ->setUploadDir('public/uploads/images')

@@ -21,7 +21,7 @@ services:
       MYSQL_USER: fms
       MYSQL_PASSWORD: fms
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
 
